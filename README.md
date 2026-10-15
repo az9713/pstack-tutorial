@@ -28,6 +28,26 @@ Links between tabs work. Links to skills open the file on GitHub. The page is on
 
 The two summaries are written in our own words from the saved X page and the video's auto-generated transcript. Figures in the article, such as PR counts and productivity multiples, are the author's claims. We did not measure them. Where Eric's description differs from the pstack repo, the video tab says so.
 
+## Rebuild the page
+
+`index.html` is generated. Edit the sources, then rebuild.
+
+| Path | Role |
+|---|---|
+| `build.py` | Converts the Markdown pages to one tabbed HTML file. |
+| `src/00-start-here.md` | The "Start here" tab. |
+| `src/article.md` | The "Article: Verification" tab. |
+| `src/video.md` | The "Video: Six stages" tab. |
+
+The Overview tab and guide pages 1 to 10 are read from a clone of [cursor/plugins](https://github.com/cursor/plugins). Run:
+
+```bash
+pip install markdown
+python build.py path/to/plugins/pstack
+```
+
+The build is deterministic. The same sources give the same `index.html`.
+
 ## Credit and license
 
 pstack and its guide come from the cursor/plugins repo and are MIT licensed, copyright Lauren Tan. This repo repackages that text into one page, adds the "Start here" tab, and adds the two summary tabs. It keeps the same MIT license. See `LICENSE`.
