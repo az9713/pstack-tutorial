@@ -19,7 +19,7 @@ th,td{border:1px solid var(--bd);padding:8px 10px;text-align:left;vertical-align
 img{max-width:100%;height:auto;border-radius:10px;border:1px solid var(--bd)}
 details{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:8px 14px;margin:1em 0}summary{cursor:pointer;color:var(--a1)}
 blockquote{margin:1em 0;padding:.1em 1em;border-left:3px solid var(--a1);color:var(--mut)}hr{border:0;border-top:1px solid var(--bd);margin:2em 0}
-</style></head><body><header><div class="bar"><span class="brand">pstack</span><nav role="tablist"><button role="tab" id="t-overview" data-tab="overview" aria-controls="p-overview">Overview</button><button role="tab" id="t-start" data-tab="start" aria-controls="p-start">Start here</button><button role="tab" id="t-setup" data-tab="setup" aria-controls="p-setup">1 Setup</button><button role="tab" id="t-mode" data-tab="mode" aria-controls="p-mode">2 poteto-mode</button><button role="tab" id="t-understand" data-tab="understand" aria-controls="p-understand">3 Understand</button><button role="tab" id="t-design" data-tab="design" aria-controls="p-design">4 Design</button><button role="tab" id="t-build" data-tab="build" aria-controls="p-build">5 Build &amp; clean</button><button role="tab" id="t-verify" data-tab="verify" aria-controls="p-verify">6 Verify &amp; ship</button><button role="tab" id="t-overnight" data-tab="overnight" aria-controls="p-overnight">7 Overnight</button><button role="tab" id="t-principles" data-tab="principles" aria-controls="p-principles">8 Principles</button><button role="tab" id="t-yours" data-tab="yours" aria-controls="p-yours">9 Make it yours</button><button role="tab" id="t-recipes" data-tab="recipes" aria-controls="p-recipes">10 Recipes</button></nav></div></header><main><section role="tabpanel" id="p-overview" aria-labelledby="t-overview" hidden><article><h1 id="overview--pstack">pstack</h1>
+</style></head><body><header><div class="bar"><span class="brand">pstack</span><nav role="tablist"><button role="tab" id="t-overview" data-tab="overview" aria-controls="p-overview">Overview</button><button role="tab" id="t-start" data-tab="start" aria-controls="p-start">Start here</button><button role="tab" id="t-setup" data-tab="setup" aria-controls="p-setup">1 Setup</button><button role="tab" id="t-mode" data-tab="mode" aria-controls="p-mode">2 poteto-mode</button><button role="tab" id="t-understand" data-tab="understand" aria-controls="p-understand">3 Understand</button><button role="tab" id="t-design" data-tab="design" aria-controls="p-design">4 Design</button><button role="tab" id="t-build" data-tab="build" aria-controls="p-build">5 Build &amp; clean</button><button role="tab" id="t-verify" data-tab="verify" aria-controls="p-verify">6 Verify &amp; ship</button><button role="tab" id="t-overnight" data-tab="overnight" aria-controls="p-overnight">7 Overnight</button><button role="tab" id="t-principles" data-tab="principles" aria-controls="p-principles">8 Principles</button><button role="tab" id="t-yours" data-tab="yours" aria-controls="p-yours">9 Make it yours</button><button role="tab" id="t-recipes" data-tab="recipes" aria-controls="p-recipes">10 Recipes</button><button role="tab" id="t-article" data-tab="article" aria-controls="p-article">Article: Verification</button><button role="tab" id="t-video" data-tab="video" aria-controls="p-video">Video: Six stages</button></nav></div></header><main><section role="tabpanel" id="p-overview" aria-labelledby="t-overview" hidden><article><h1 id="overview--pstack">pstack</h1>
 <p>i'm <a href="https://x.com/poteto" target="_blank" rel="noopener">poteto</a>. i'm not a president or ceo, but i've worked with millions of lines of code at Meta, Netflix, and Cursor. i'm also on the react core team where i help build and maintain react compiler.</p>
 <p>there's a growing sense that ai writes too much slop code. i agree. i don't want to ship like a team of twenty slop artists. throughput without quality is not a goal i aspire to. if you want to go fast, go deep first. </p>
 <p><strong>pstack is my answer.</strong> these are the same skills i use everyday to ship high quality code at Cursor. this turns cursor into a real engineering team. the goal is not to maximize loc, in fact it's the opposite. pstack helps you write less, but higher quality code.</p>
@@ -1762,7 +1762,262 @@ keep a decision log. don't ask me before committing.
 <li><strong>Writing a <code>SKILL.md</code> freehand.</strong> Route it through the <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/authoring-a-skill.md" target="_blank" rel="noopener">Authoring or modifying a skill playbook</a> so validation and review happen.</li>
 </ul>
 <p>That's the guide. If you skipped ahead, go back to <a href="#setup" data-go="setup:">setup</a> and run one real task. The habits stick from use, not from reading.</p>
-<p>Back to the <a href="#start" data-go="start:">guide index</a>.</p></article></section></main><script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js" integrity="sha384-WmdflGW9aGfoBdHc4rRyWzYuAjEmDwMdGdiPNacbwfGKxBW/SO6guzuQ76qjnSlr" crossorigin="anonymous"></script><script>
+<p>Back to the <a href="#start" data-go="start:">guide index</a>.</p></article></section><section role="tabpanel" id="p-article" aria-labelledby="t-article" hidden><article><h1 id="article--article-verification-is-the-first-skill-to-build">Article: verification is the first skill to build</h1>
+<p><strong>Source.</strong> "The Complete Guide to pstack Pt. 1", an X article by lauren (<a href="https://x.com/poteto" target="_blank" rel="noopener">@poteto</a>), the author of pstack. Posted 31 Aug 2026. <a href="https://x.com/poteto/status/2094457600259842065" target="_blank" rel="noopener">Read the original</a>.</p>
+<p>This tab is a summary in our own words. Numbers and results below are the author's own claims. We did not measure them.</p>
+<h2 id="article--the-claim">The claim</h2>
+<p>The author says the most important skill to own is a high-quality <strong>verification skill</strong>. They treat it as critical infrastructure, not as one skill among many. In their words, a good one multiplies a team's output by 100 to 1000 times, and it helps people who are not engineers too.</p>
+<p><strong>Verification</strong> means the agent can check its own work. It keeps going until the check passes. You are no longer the bottleneck.</p>
+<p>This is the same idea as the <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/principle-prove-it-works/SKILL.md" target="_blank" rel="noopener">Prove It Works principle</a> and as Step 6 of <a href="#start" data-go="start:">Start here</a>.</p>
+<h2 id="article--why-volume-matters">Why volume matters</h2>
+<p>The author says they used to ignore how many PRs or lines of code a person landed. Since building pstack, they changed their mind. When quality holds or improves, volume matters.</p>
+<p>The example is Grok Bot. The author says the team lands hundreds of PRs a day, and that pstack let them keep the code quality high while they refactored the foundations, added lints and checks, and built features. They call this role the <strong>gardener</strong>. A gardener watches the stream of PRs, notices repeated smells, and removes them.</p>
+<h2 id="article--how-to-build-a-verification-skill">How to build a verification skill</h2>
+<ol>
+<li>Install pstack.</li>
+<li>Run <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/create-verification-skill/SKILL.md" target="_blank" rel="noopener"><code>/create-verification-skill</code></a>.</li>
+<li>Let the agent work. It reads your app, builds a small CLI, and writes a feature map.</li>
+</ol>
+<p>The article adds a second route. It names a bot called Dr Eggbot that ships with pstack. The author says it teaches coding bots how to use the skill, and that you can ask it to create an engineer bot that runs <code>/create-verification-skill</code> and a daily <code>/maintain-verification-skill</code>.</p>
+<h3 id="article--your-tech-stack-decides-how-easy-this-is">Your tech stack decides how easy this is</h3>
+<p>The author wants the agent to do what you would do by hand. Interact with the app, debug it, take performance traces, and read logs. A web or Electron app can use the Chrome DevTools Protocol (CDP). An iOS app can use the simulator. If your stack has no rich runtime, the author suggests that you ask the agent to build the tools. They go further. They say it can be worth choosing a different stack to make agent verification easier, because the harder an app is to debug and control, the harder it is to use agents on it.</p>
+<h2 id="article--make-it-reproducible-with-a-small-cli">Make it reproducible with a small CLI</h2>
+<p>pstack has a principle named <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/principle-build-the-lever/SKILL.md" target="_blank" rel="noopener">Build the Lever</a>. For a skill, it means that you give agents a tool and not only markdown. For verification, the tool is a small CLI that scripts how to drive and debug your app. Agents use fewer tokens, because they run one command and do not write a throwaway script to click a button. The skill also becomes repeatable and testable.</p>
+<p>The article shows a made-up Electron app called Atlas with a CLI named <code>control-atlas.mjs</code>. These are the command groups it lists.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Example commands</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inspection</td>
+<td><code>info</code>, <code>snapshot</code>, <code>screenshot</code>, <code>components</code></td>
+</tr>
+<tr>
+<td>Navigation</td>
+<td><code>home</code>, <code>new-session</code>, <code>select-project</code>, <code>select-runtime</code>, <code>scroll</code></td>
+</tr>
+<tr>
+<td>Interaction</td>
+<td><code>send</code>, <code>click</code>, <code>click-xy</code>, <code>aria-click</code>, <code>type</code>, <code>press</code>, <code>eval</code>, <code>upload-image</code>, <code>add-context</code>, <code>feature-flag</code></td>
+</tr>
+<tr>
+<td>Performance</td>
+<td><code>trace</code>, <code>profile</code>, <code>record</code>, <code>perf-metrics</code>, <code>wait-settle</code></td>
+</tr>
+<tr>
+<td>Streaming</td>
+<td><code>console</code>, <code>network-log</code>, <code>network-summary</code></td>
+</tr>
+<tr>
+<td>Health and cleanup</td>
+<td><code>doctor</code>, <code>cleanup</code>, <code>watch --restart</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>The author asks you to spend time here first. Make the CLI good and free of errors before you do anything more advanced. Also prepare the development setup, since agents need it as much as you do. That means a seeded dev database, test users and auth, API calls against a test or staging environment, and one consistent way to bring the environment up.</p>
+<h3 id="article--what-makes-a-cli-good-for-agents">What makes a CLI good for agents</h3>
+<ul>
+<li>The commands are easy to combine. The author points to John Ousterhout's idea of deep modules.</li>
+<li>Any command with destructive side effects has a <code>--dry-run</code> option.</li>
+<li>Subcommands reveal features gradually.</li>
+<li>Error messages say what the agent should do instead.</li>
+<li><code>--help</code> text is rich.</li>
+<li>Output is machine-readable, such as JSON.</li>
+</ul>
+<h2 id="article--use-cloud-agents-not-worktrees-to-go-parallel">Use cloud agents, not worktrees, to go parallel</h2>
+<p>Once the skill lands a few PRs, you will want more agents at once. The first idea is a git worktree for each agent. The author recommends against it. Worktrees use disk space and machine resources. Depending on repo size and machine power, they say you may reach about 10 agents in parallel.</p>
+<p>The better route in the article is Cursor <strong>cloud agents</strong>. A cloud agent runs on Cursor's infrastructure on a real computer. It can install dependencies, run your app, record video and screenshots, and use the app like a person. Cursor helps an agent set up the cloud environment the first time, and then saves a snapshot, so later runs start fast. The author says a later post will cover running hundreds of subagents in the cloud.</p>
+<p>This agrees with <a href="#mode" data-go="mode:mode--give-parallel-work-its-own-machine">Route work through <code>/poteto-mode</code></a>, which says a cloud subagent is the cleanest isolation and a worktree is the local option.</p>
+<h2 id="article--the-feature-map">The Feature Map</h2>
+<p>As an app grows, an agent needs help to find features. The <strong>Feature Map</strong> is a searchable map of every feature. For each feature it records what the feature does and how a user reaches it.</p>
+<ul>
+<li><code>/create-verification-skill</code> creates a <code>references/features</code> folder next to a <code>README.md</code>. The README is the map. It gives an overview and links to a page for each feature.</li>
+<li>A feature page has these sections. Sub-features. How to get to it, from the user's point of view. How to drive it with the CLI. Gotchas.</li>
+<li>The agent writes these pages for you by walking through your app.</li>
+</ul>
+<p>The author calls the map "materialized memory". Their argument has three parts. Your code is the best record of the decisions your team made. A Feature Map is a smaller form of that record, made to save tokens. It is markdown inside a skill, so everyone who works in the repo shares it.</p>
+<p>The worked example is in the repo <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/create-verification-skill/references/feature-map-example/README.md" target="_blank" rel="noopener"><code>create-verification-skill/references/feature-map-example</code></a>.</p>
+<h3 id="article--keep-it-true">Keep it true</h3>
+<p>Run <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/maintain-verification-skill/SKILL.md" target="_blank" rel="noopener"><code>/maintain-verification-skill</code></a> at least once a day. Agents will often update the skill as they work, and the command catches what they miss. The author suggests treating the skill like production infrastructure. They even suggest an on-call rotation for it.</p>
+<h2 id="article--how-the-author-uses-it">How the author uses it</h2>
+<p>Start the prompt with <code>/poteto-mode</code>. In Cursor, press Option+Enter when you pick it, to pin it as a Custom Mode. This is the same step as in <a href="#start" data-go="start:start--two-ways-to-start-a-skill">Part 2 of Start here</a>.</p>
+<p><strong>A new feature</strong></p>
+<pre><code class="language-text">/poteto-mode build &lt;description of feature, any useful context&gt;. use /control-app to verify your changes and show me a video and screenshots as proof
+</code></pre>
+<p>Here <code>/control-app</code> stands for the skill that <code>/create-verification-skill</code> made for your app. The generated name differs by app. This tutorial writes it as <code>/verify-&lt;app&gt;</code>.</p>
+<p><strong>In Grok Bot.</strong> The author tells the bot to spawn a cloud agent to do the work. The bot stays free and its context window stays clean. They think of their bots as coordinators that supervise cloud agents.</p>
+<p><strong>Performance work.</strong> First take a trace of the current state with the verification skill. Make one targeted fix. Then use the verification skill with <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/swarm/SKILL.md" target="_blank" rel="noopener"><code>/swarm</code></a> to confirm the win over a large enough sample. A swarm of verifiers can also fuzz the app to catch regressions.</p>
+<p><strong>Reproducing user reports.</strong> Put the verification skill into a Grok Bot routine or a Cursor Automation. These run on a schedule or on an event. If user feedback flows into Slack, a bot can try to reproduce every report with a cloud agent. If the skill and the Feature Map are good enough, the author says you may let it auto-fix too. The repo's <a href="https://github.com/cursor/plugins/tree/main/pstack/automations/benny" target="_blank" rel="noopener">benny automation pack</a> is a ready example of this pattern.</p>
+<h2 id="article--links-from-the-article">Links from the article</h2>
+<ul>
+<li>A made-up example app with a verification skill: <a href="https://github.com/poteto/verification-skill-example" target="_blank" rel="noopener">poteto/verification-skill-example</a>.</li>
+<li>The earlier post the author recommends, "Loops You Can Trust".</li>
+<li>The article says pstack also runs as a plugin in Grok Bot. This tutorial covers Cursor only.</li>
+</ul>
+<h2 id="article--what-to-take-from-it">What to take from it</h2>
+<ol>
+<li>Build the verification skill first. Every later skill depends on it.</li>
+<li>Put your effort into a small, reliable CLI and a true Feature Map.</li>
+<li>Maintain the skill daily.</li>
+<li>Parallelize on cloud agents when you can.</li>
+</ol>
+<p>Next: <a href="#verify" data-go="verify:">Verify and ship</a> in this tutorial covers the same ground step by step.</p></article></section><section role="tabpanel" id="p-video" aria-labelledby="t-video" hidden><article><h1 id="video--video-pstack-across-six-stages">Video: pstack across six stages</h1>
+<p><strong>Source.</strong> A YouTube video by Eric, who describes himself as a former senior software engineer at Amazon and Microsoft and the founder of bookzero.ai. <a href="https://www.youtube.com/watch?v=4wBVuj2an8E" target="_blank" rel="noopener">Watch on YouTube</a>. The video is about 15 minutes long.</p>
+<p>Eric reviews pstack against two other skill sets, Matt Pocock's skills and Superpowers. He walks through pstack in the six stages of the software development life cycle: planning, design, build, testing, deploy, and maintain.</p>
+<p>This tab is a summary of the auto-generated transcript, in our own words. The transcript has some mis-heard words. Where Eric's description differs from the pstack repo, this tab says so.</p>
+<h2 id="video--chapters">Chapters</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Chapter</th>
+<th>What he covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.youtube.com/watch?v=4wBVuj2an8E&amp;t=0s" target="_blank" rel="noopener">0:00</a></td>
+<td>What is pstack</td>
+<td>Who made it, and what the video will cover.</td>
+</tr>
+<tr>
+<td><a href="https://www.youtube.com/watch?v=4wBVuj2an8E&amp;t=55s" target="_blank" rel="noopener">0:55</a></td>
+<td>Planning skills</td>
+<td>Learn the code first. Plan a big job.</td>
+</tr>
+<tr>
+<td><a href="https://www.youtube.com/watch?v=4wBVuj2an8E&amp;t=130s" target="_blank" rel="noopener">2:10</a></td>
+<td>Design skills</td>
+<td>Settle the code shape with several models.</td>
+</tr>
+<tr>
+<td><a href="https://www.youtube.com/watch?v=4wBVuj2an8E&amp;t=196s" target="_blank" rel="noopener">3:16</a></td>
+<td>Build skills</td>
+<td>TDD, TypeScript rules, cleaning the diff, no comments.</td>
+</tr>
+<tr>
+<td><a href="https://www.youtube.com/watch?v=4wBVuj2an8E&amp;t=333s" target="_blank" rel="noopener">5:33</a></td>
+<td>Testing skills</td>
+<td>Prove the app works, swarm, attack the diff.</td>
+</tr>
+<tr>
+<td><a href="https://www.youtube.com/watch?v=4wBVuj2an8E&amp;t=498s" target="_blank" rel="noopener">8:18</a></td>
+<td>Deploy skills</td>
+<td>An easy-to-review PR, then babysit it to merge.</td>
+</tr>
+<tr>
+<td><a href="https://www.youtube.com/watch?v=4wBVuj2an8E&amp;t=712s" target="_blank" rel="noopener">11:52</a></td>
+<td>Extra skills</td>
+<td>The router, catch-up and plain-talk skills.</td>
+</tr>
+<tr>
+<td><a href="https://www.youtube.com/watch?v=4wBVuj2an8E&amp;t=756s" target="_blank" rel="noopener">12:36</a></td>
+<td>Principles and learnings</td>
+<td>Why principles are skills, and which ones he will adopt.</td>
+</tr>
+</tbody>
+</table></div>
+<p>A sponsor segment runs from about 9:54 to 11:49. It is not about pstack.</p>
+<h2 id="video--the-six-stages-mapped-to-this-tutorial">The six stages, mapped to this tutorial</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Eric's workflows</th>
+<th>pstack skills he names</th>
+<th>Where to read more</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Planning</td>
+<td>Learn the code first. Plan a big job.</td>
+<td><code>/how</code>, <code>/why</code>, <code>/teach</code>, <code>/figure-it-out</code>, <code>/show-me-your-work</code></td>
+<td><a href="#understand" data-go="understand:">Understand the code</a></td>
+</tr>
+<tr>
+<td>Design</td>
+<td>Settle the code shape.</td>
+<td><code>/architect</code>, <code>/arena</code>, <code>/interrogate</code></td>
+<td><a href="#design" data-go="design:">Design the change</a></td>
+</tr>
+<tr>
+<td>Build</td>
+<td>Test first. Clean the diff.</td>
+<td><code>/tdd</code>, <code>/typescript-best-practices</code>, <code>/deslop</code>, <code>/no-comments</code></td>
+<td><a href="#build" data-go="build:">Build and clean</a></td>
+</tr>
+<tr>
+<td>Testing</td>
+<td>Prove it works. Swarm. Attack the diff.</td>
+<td><code>/create-verification-skill</code>, <code>/maintain-verification-skill</code>, <code>/swarm</code>, <code>/interrogate</code></td>
+<td><a href="#verify" data-go="verify:">Verify and ship</a></td>
+</tr>
+<tr>
+<td>Deploy</td>
+<td>Easy-to-review PR. Babysit to merge.</td>
+<td>Opening a PR and Babysit playbooks</td>
+<td><a href="#verify" data-go="verify:verify--open-the-pr">Verify and ship</a></td>
+</tr>
+<tr>
+<td>Maintain</td>
+<td>Collect issues and cycle back to planning.</td>
+<td>None, in Eric's view</td>
+<td><a href="#overnight" data-go="overnight:">Run work while you sleep</a></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="video--what-he-says-stage-by-stage">What he says, stage by stage</h2>
+<h3 id="video--planning">Planning</h3>
+<p>Eric says pstack's planning skills are aimed at <strong>brownfield</strong> work, meaning a project that already has code. He sees two workflows. The first is learning the code. <code>/how</code> tells you how it works, <code>/why</code> tells you why it works that way, and <code>/teach</code> joins the two. The second is planning a big job with <code>/figure-it-out</code>, and keeping a log of decisions with <code>/show-me-your-work</code>.</p>
+<p>His own view is that pstack is not strong on planning, which matches the author's stance in the <a href="#overview" data-go="overview:">README</a>. For a new build from scratch, he prefers Matt Pocock's skills or Superpowers. For migrations and large changes to existing code, he finds pstack up to the job.</p>
+<h3 id="video--design">Design</h3>
+<p>The workflow is "settle the code shape". <code>/architect</code> calls <code>/arena</code>, which sends the same brief to several models and agents. Eric stresses the contrast with other skill sets he reviewed, which rely on one model. pstack asks models such as Opus, GPT, and Grok to design separately, compares them, and combines the best parts into one report.</p>
+<p>Eric says <code>/interrogate</code> judges and combines the designs. In the repo, a judge inside <code>/arena</code> scores the candidates, and <code>/interrogate</code> is for reviewing a diff. See <a href="#design" data-go="design:">Design the change</a>.</p>
+<h3 id="video--build">Build</h3>
+<ul>
+<li><strong><code>/tdd</code>.</strong> Write the test first. Eric has compared the TDD skills from pstack, Matt Pocock, and Superpowers on his own skill map.</li>
+<li><strong><code>/typescript-best-practices</code>.</strong> Loads TypeScript rules. He ties it to the author's React background.</li>
+<li><strong>Cleaning the diff.</strong> <code>/deslop</code> compares your branch to main and removes extra comments, needless <code>try</code>/<code>catch</code>, untyped variables, and deep nesting. Tests keep the behavior the same, and you get a one-to-three-sentence summary. <code>/deslop</code> ships in the <code>cursor-team-kit</code> plugin, not in pstack.</li>
+<li><strong><code>/no-comments</code>.</strong> Eric's explanation of why it exists is that an AI may trust a comment over the code. If a comment says a function returns A and the code returns B, the AI can follow the comment. Removing comments removes that noise.</li>
+</ul>
+<h3 id="video--testing">Testing</h3>
+<p>Eric calls these skills "really really interesting". This stage has three workflows.</p>
+<ol>
+<li><strong>Prove the application works.</strong> <code>/create-verification-skill</code> builds end-to-end checks. He separates it from <code>/tdd</code>. TDD writes unit or functional tests. This skill writes the whole flow. It sets up the environment, launches the app, diagnoses problems, drives real user behavior, collects evidence, and cleans up. It keeps one feature per folder, and it points you to the maintain skill.</li>
+<li><strong>Swarm.</strong> <code>/swarm</code> runs many agents, on models you choose, each on a small part. One report comes back.</li>
+<li><strong>Attack the diff.</strong> <code>/interrogate</code> has several models try to break your change, compared to main. A code-quality review layer pushes for simpler code. Eric compares this to the <code>ponytail</code> skill he reviewed earlier.</li>
+</ol>
+<h3 id="video--deploy">Deploy</h3>
+<p>The skills make a PR easy to review, then <strong>babysit</strong> it. Babysit fixes merge conflicts, lists and handles review comments, and fixes CI failures. Eric notes that everyone has a PR style of their own, so read the pstack skill and adapt it. See <a href="#verify" data-go="verify:verify--open-the-pr">Open the PR</a> and the Babysit playbook.</p>
+<h3 id="video--maintain">Maintain</h3>
+<p>Eric says pstack has no skill that collects issues from production and sends them back to planning. The repo does ship a dormant <a href="https://github.com/cursor/plugins/tree/main/pstack/automations/benny" target="_blank" rel="noopener">benny automation pack</a>. It triages Slack issue reports, then reproduces and fixes confirmed bugs. It is not active until you set it up.</p>
+<h3 id="video--extra-skills">Extra skills</h3>
+<ul>
+<li><code>/poteto-mode</code> as a <strong>router</strong>. When you do not know which skill to use, describe the problem and it picks. <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-help/SKILL.md" target="_blank" rel="noopener"><code>/poteto-help</code></a> also answers this.</li>
+<li>Setup skills, such as <code>/setup-pstack</code>.</li>
+<li><strong>Catch-up and plain-talk skills.</strong> Eric likes these. After you switch projects, they bring you back up to date. They are <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/recall/SKILL.md" target="_blank" rel="noopener"><code>/recall</code></a>, <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/ketchup/SKILL.md" target="_blank" rel="noopener"><code>/ketchup</code></a>, and <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/bro/SKILL.md" target="_blank" rel="noopener"><code>/bro</code></a>.</li>
+<li>Writing skills, and skills that improve pstack over time, such as <code>/reflect</code> and <code>/correct</code>.</li>
+</ul>
+<h3 id="video--principles-and-what-he-took-from-them">Principles and what he took from them</h3>
+<p>Eric asks why the principles are skills and not a system prompt. His answer is that a system prompt with every rule is a large file, and the model reads it on every message even when the rules do not apply. Separate skills with an index load a rule only when it is needed. This matches how <code>/poteto-mode</code> works. See <a href="#principles" data-go="principles:">Steer with principle names</a>.</p>
+<p>He picked three principles to add to his own workflow.</p>
+<ul>
+<li><strong>Keep it small.</strong> Close to the <code>ponytail</code> skill he already uses. This is the <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/principle-laziness-protocol/SKILL.md" target="_blank" rel="noopener">Laziness Protocol</a>.</li>
+<li><strong>Attack the premise.</strong> When an AI fixes a bug, the bug returns, and it fixes it again, the loop can run for a long time. This principle makes the AI stop and question its assumption first. See <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/principle-attack-the-premise/SKILL.md" target="_blank" rel="noopener">Attack the Premise</a>.</li>
+<li><strong>Type-system discipline.</strong> Reject impossible states. His example is a payment that is both paid and pending. See <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/principle-type-system-discipline/SKILL.md" target="_blank" rel="noopener">Type System Discipline</a>.</li>
+</ul>
+<h2 id="video--what-a-beginner-can-take-from-it">What a beginner can take from it</h2>
+<ol>
+<li>pstack covers the whole life of a change, not only coding. The stage table above is a good map.</li>
+<li>The two most distinctive ideas are multi-model design and end-to-end verification.</li>
+<li>You can adopt one skill or one principle at a time. Eric took three principles and left the rest.</li>
+</ol>
+<p>Also read: <a href="#article" data-go="article:">Article: verification is the first skill to build</a> is the companion tab for the testing stage.</p></article></section></main><script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js" integrity="sha384-WmdflGW9aGfoBdHc4rRyWzYuAjEmDwMdGdiPNacbwfGKxBW/SO6guzuQ76qjnSlr" crossorigin="anonymous"></script><script>
 const tabs=[...document.querySelectorAll('[role=tab]')];
 function show(id,anchor){
  if(!document.getElementById('p-'+id))id='overview';
