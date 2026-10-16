@@ -17,6 +17,8 @@ Fifteen pages. A contents panel on the left lists them in three groups. On a nar
 | Article: Verification | A summary of "The Complete Guide to pstack Pt. 1". Verification skill, agent-friendly CLI, cloud agents against worktrees, the Feature Map. |
 | Video: Six stages | A summary of Eric's video. pstack mapped onto six stages of the software life cycle, with chapter timestamps. |
 
+A second page, `playbooks.html`, covers all 23 `/poteto-mode` playbooks. Each has a plain-words explanation, the steps, copy-ready prompts with placeholders and filled-in examples, phrases that change behavior, and pitfalls. Live: https://az9713.github.io/pstack-tutorial/playbooks.html
+
 Links between tabs work. Links to skills open the file on GitHub. The page is one file, `index.html`, with the images embedded.
 
 ## Sources
@@ -47,6 +49,8 @@ The Overview tab and guide pages 1 to 10 are read from a clone of [cursor/plugin
 pip install markdown
 python build.py path/to/plugins/pstack
 ```
+
+Build the playbooks page with `python build_playbooks.py path/to/plugins/pstack`. Its sources are `src/playbooks/*.md`. The first drafts of those pages were written by AI helper agents from the playbook files, then checked for structure and spot-checked against the source. Prompts for playbooks that have no published trigger phrase use wording we chose.
 
 The build is deterministic. The same sources give the same `index.html`.
 

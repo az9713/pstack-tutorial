@@ -1,0 +1,1677 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>pstack playbooks</title><style>
+:root{--bg:#0f172a;--card:#1e293b;--tx:#e2e8f0;--tx2:#cbd5e1;--mut:#94a3b8;--a1:#fb923c;--a2:#2dd4bf;--bd:#334155;--side:250px}
+*{box-sizing:border-box}html{scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--tx2);font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}
+.layout{display:flex;max-width:1180px;margin:0 auto}
+aside{width:var(--side);flex:none;position:sticky;top:0;height:100vh;overflow-y:auto;padding:20px 12px;border-right:1px solid var(--bd);background:var(--bg)}
+.brand{display:block;color:var(--a1);font-weight:700;font-size:1.1rem;padding:0 10px 12px}
+.grp{color:var(--mut);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:12px 10px 4px}
+aside button{display:block;width:100%;text-align:left;background:none;border:0;border-left:3px solid transparent;color:var(--tx2);padding:5px 10px;border-radius:0 8px 8px 0;font:inherit;font-size:14.5px;cursor:pointer}
+aside button:hover{background:var(--card);color:var(--tx)}
+aside button[aria-selected=true]{background:var(--card);color:var(--a2);border-left-color:var(--a1);font-weight:600}
+main{flex:1;min-width:0;max-width:860px;padding:28px 24px 80px}
+#bar{display:none}
+h1,h2,h3,h4{color:var(--tx);line-height:1.25}h1{font-size:2rem;margin-top:0}h2{margin-top:2.2em;padding-bottom:.3em;border-bottom:1px solid var(--bd)}
+a{color:var(--a2)}a:hover{color:var(--a1)}strong{color:var(--tx)}
+code{background:var(--card);border:1px solid var(--bd);border-radius:4px;padding:1px 5px;font-size:.88em;color:var(--a1)}
+pre{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:14px 16px;overflow-x:auto}pre code{background:none;border:0;padding:0;color:var(--tx)}
+pre.mermaid{text-align:center;color:var(--mut)}
+pre{position:relative}.cp{position:absolute;top:6px;right:6px;background:var(--bg);color:var(--mut);border:1px solid var(--bd);border-radius:6px;padding:2px 9px;font:inherit;font-size:12px;cursor:pointer}.cp:hover{color:var(--a2);border-color:var(--a2)}
+.xl{display:block;margin:18px 10px 0;padding-top:12px;border-top:1px solid var(--bd);font-size:14px}
+.tw{overflow-x:auto;margin:1em 0}table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{border:1px solid var(--bd);padding:8px 10px;text-align:left;vertical-align:top}th{background:var(--card);color:var(--tx)}
+img{max-width:100%;height:auto;border-radius:10px;border:1px solid var(--bd)}
+details{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:8px 14px;margin:1em 0}summary{cursor:pointer;color:var(--a1)}
+blockquote{margin:1em 0;padding:.1em 1em;border-left:3px solid var(--a1);color:var(--mut)}hr{border:0;border-top:1px solid var(--bd);margin:2em 0}
+@media(max-width:820px){
+ #bar{display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:6;background:var(--bg);border-bottom:1px solid var(--bd);padding:8px 16px}
+ #bar button{background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer}
+ #bar span{color:var(--a1);font-weight:700}
+ aside{position:fixed;z-index:7;left:0;top:0;width:min(280px,85vw);transform:translateX(-100%);transition:transform .2s;border-right:1px solid var(--bd)}
+ body.open aside{transform:none}
+ #scrim{display:none;position:fixed;inset:0;z-index:6;background:rgba(0,0,0,.5)}body.open #scrim{display:block}
+ .layout{display:block}main{padding:20px 16px 80px}
+}
+</style></head><body><div id="bar"><button id="menu" aria-expanded="false" aria-controls="side">Contents</button><span>pstack playbooks</span></div><div id="scrim"></div><div class="layout"><aside id="side"><span class="brand">pstack playbooks</span><nav role="tablist" aria-orientation="vertical"><div class="grp">Start</div><button role="tab" id="t-how" data-tab="how" aria-controls="p-how">How to use this page</button><div class="grp">Understand and diagnose</div><button role="tab" id="t-investigation" data-tab="investigation" aria-controls="p-investigation">Investigation</button><button role="tab" id="t-runtime-forensics" data-tab="runtime-forensics" aria-controls="p-runtime-forensics">Runtime forensics</button><button role="tab" id="t-trace-forensics" data-tab="trace-forensics" aria-controls="p-trace-forensics">Trace forensics</button><div class="grp">Fix and improve</div><button role="tab" id="t-bug-fix" data-tab="bug-fix" aria-controls="p-bug-fix">Bug fix</button><button role="tab" id="t-perf-issue" data-tab="perf-issue" aria-controls="p-perf-issue">Perf issue</button><button role="tab" id="t-hillclimb" data-tab="hillclimb" aria-controls="p-hillclimb">Hillclimb</button><div class="grp">Design and build</div><button role="tab" id="t-feature" data-tab="feature" aria-controls="p-feature">Feature</button><button role="tab" id="t-refactoring" data-tab="refactoring" aria-controls="p-refactoring">Refactoring</button><button role="tab" id="t-prototype" data-tab="prototype" aria-controls="p-prototype">Prototype</button><button role="tab" id="t-visual-parity" data-tab="visual-parity" aria-controls="p-visual-parity">Visual parity</button><button role="tab" id="t-multi-phase-plan" data-tab="multi-phase-plan" aria-controls="p-multi-phase-plan">Multi-phase plan</button><div class="grp">Skills</div><button role="tab" id="t-authoring-a-skill" data-tab="authoring-a-skill" aria-controls="p-authoring-a-skill">Authoring a skill</button><button role="tab" id="t-eval" data-tab="eval" aria-controls="p-eval">Eval</button><div class="grp">Ship</div><button role="tab" id="t-opening-a-pr" data-tab="opening-a-pr" aria-controls="p-opening-a-pr">Opening a PR</button><button role="tab" id="t-babysit" data-tab="babysit" aria-controls="p-babysit">Babysit</button><button role="tab" id="t-shipping" data-tab="shipping" aria-controls="p-shipping">Shipping</button><button role="tab" id="t-autopilot-stack" data-tab="autopilot-stack" aria-controls="p-autopilot-stack">Autopilot: stack</button><button role="tab" id="t-autopilot-full" data-tab="autopilot-full" aria-controls="p-autopilot-full">Autopilot: full</button><div class="grp">Operate</div><button role="tab" id="t-autonomous-run" data-tab="autonomous-run" aria-controls="p-autonomous-run">Autonomous run</button><button role="tab" id="t-orchestrate" data-tab="orchestrate" aria-controls="p-orchestrate">Orchestrate</button><button role="tab" id="t-session-pickup" data-tab="session-pickup" aria-controls="p-session-pickup">Session pickup</button><button role="tab" id="t-pause-safely" data-tab="pause-safely" aria-controls="p-pause-safely">Pause safely</button><button role="tab" id="t-worktree-cleanup" data-tab="worktree-cleanup" aria-controls="p-worktree-cleanup">Worktree cleanup</button></nav><a class="xl" href="index.html">&larr; Back to the tutorial</a></aside><main><section role="tabpanel" id="p-how" aria-labelledby="t-how" hidden><article><h1>Playbooks: copy, adapt, paste</h1>
+<p>A <strong>playbook</strong> is a written list of steps for one kind of job. pstack has 23 of them. You do not call a playbook by name. You type <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/SKILL.md" target="_blank" rel="noopener"><code>/poteto-mode</code></a> and describe the job. <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/SKILL.md" target="_blank" rel="noopener"><code>/poteto-mode</code></a> reads your words, picks the playbook that fits, copies its steps into a todo list, and works through them.</p>
+<p>This page is a reference for all 23. Each page has the same parts, so you can find what you need fast.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>What it gives you</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Use it when</strong></td>
+<td>One sentence to match the playbook to your situation.</td>
+</tr>
+<tr>
+<td><strong>In plain words</strong></td>
+<td>An explanation of the idea, with jargon defined.</td>
+</tr>
+<tr>
+<td><strong>What it does</strong></td>
+<td>The steps the playbook follows, in order.</td>
+</tr>
+<tr>
+<td><strong>What you get back</strong></td>
+<td>What the final reply contains.</td>
+</tr>
+<tr>
+<td><strong>Copy and adapt</strong></td>
+<td>Prompts with <code>&lt;placeholders&gt;</code>, each followed by a filled-in example.</td>
+</tr>
+<tr>
+<td><strong>Make it yours</strong></td>
+<td>Short phrases you can add to change what the agent does.</td>
+</tr>
+<tr>
+<td><strong>Watch for</strong></td>
+<td>Limits, stop points, and common mistakes.</td>
+</tr>
+<tr>
+<td><strong>Pairs with</strong></td>
+<td>The playbooks and skills that work well next to it.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Every code block has a <strong>Copy</strong> button.</p>
+<h2>How to use a prompt from this page</h2>
+<ol>
+<li>Pick the playbook that matches your job. Use the table below.</li>
+<li>Copy a prompt from its <strong>Copy and adapt</strong> section.</li>
+<li>Replace each <code>&lt;placeholder&gt;</code> with your own words.</li>
+<li>Keep the phrases that name the job, such as "repro first" or "don't change any code yet". The router uses them to pick the playbook.</li>
+<li>Paste it into a Cursor chat.</li>
+</ol>
+<p>The filled-in examples show the level of detail that works. A prompt does not need to be long.</p>
+<p>Some playbooks have no published trigger phrase. For those, the prompts use wording we chose from the playbook text. If <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/SKILL.md" target="_blank" rel="noopener"><code>/poteto-mode</code></a> picks the wrong playbook, name the one you want in the prompt, for example "use the babysit playbook".</p>
+<h2>What a good prompt carries</h2>
+<p>A good prompt has up to five parts. Each part fits in one sentence.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The goal</td>
+<td>"the export drops its last row"</td>
+</tr>
+<tr>
+<td>The done check</td>
+<td>"done means the 60k-row fixture exports every row"</td>
+</tr>
+<tr>
+<td>The proof</td>
+<td>"show me the row counts before and after"</td>
+</tr>
+<tr>
+<td>What you know</td>
+<td>"failing job id is 4812"</td>
+</tr>
+<tr>
+<td>The real constraints</td>
+<td>"repro first", "don't change any code yet", "let me review before you proceed"</td>
+</tr>
+</tbody>
+</table></div>
+<p>Do not list steps or skills in your prompt. The playbook already holds them in the right order.</p>
+<h2>Which playbook do I need?</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>You want to</th>
+<th>Playbook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ask how something works, or why it was built that way</td>
+<td><a href="#investigation" data-go="investigation:">Investigation</a></td>
+</tr>
+<tr>
+<td>Find the cause of a live symptom such as a leak or a CPU spin</td>
+<td><a href="#runtime-forensics" data-go="runtime-forensics:">Runtime forensics</a></td>
+</tr>
+<tr>
+<td>Read a profile or trace file you already captured</td>
+<td><a href="#trace-forensics" data-go="trace-forensics:">Trace forensics</a></td>
+</tr>
+<tr>
+<td>Fix a defect</td>
+<td><a href="#bug-fix" data-go="bug-fix:">Bug fix</a></td>
+</tr>
+<tr>
+<td>Make something faster</td>
+<td><a href="#perf-issue" data-go="perf-issue:">Perf issue</a></td>
+</tr>
+<tr>
+<td>Push one number toward a target over many tries</td>
+<td><a href="#hillclimb" data-go="hillclimb:">Hillclimb</a></td>
+</tr>
+<tr>
+<td>Add or change behavior</td>
+<td><a href="#feature" data-go="feature:">Feature</a></td>
+</tr>
+<tr>
+<td>Restructure code and keep behavior the same</td>
+<td><a href="#refactoring" data-go="refactoring:">Refactoring</a></td>
+</tr>
+<tr>
+<td>Compare design options by building throwaway versions</td>
+<td><a href="#prototype" data-go="prototype:">Prototype</a></td>
+</tr>
+<tr>
+<td>Make a UI match a reference exactly</td>
+<td><a href="#visual-parity" data-go="visual-parity:">Visual parity</a></td>
+</tr>
+<tr>
+<td>Plan work that spans several PRs</td>
+<td><a href="#multi-phase-plan" data-go="multi-phase-plan:">Multi-phase plan</a></td>
+</tr>
+<tr>
+<td>Write or edit a skill</td>
+<td><a href="#authoring-a-skill" data-go="authoring-a-skill:">Authoring a skill</a></td>
+</tr>
+<tr>
+<td>Test whether a skill or prompt change helps</td>
+<td><a href="#eval" data-go="eval:">Eval</a></td>
+</tr>
+<tr>
+<td>Open a PR</td>
+<td><a href="#opening-a-pr" data-go="opening-a-pr:">Opening a PR</a></td>
+</tr>
+<tr>
+<td>Get a PR through conflicts, review, and CI</td>
+<td><a href="#babysit" data-go="babysit:">Babysit</a></td>
+</tr>
+<tr>
+<td>Land a green stack of PRs</td>
+<td><a href="#shipping" data-go="shipping:">Shipping</a></td>
+</tr>
+<tr>
+<td>Build and verify a stack for you to review and land</td>
+<td><a href="#autopilot-stack" data-go="autopilot-stack:">Autopilot: stack</a></td>
+</tr>
+<tr>
+<td>Run independent PRs all the way to merged</td>
+<td><a href="#autopilot-full" data-go="autopilot-full:">Autopilot: full</a></td>
+</tr>
+<tr>
+<td>Drive one long task to a finish line without stopping</td>
+<td><a href="#autonomous-run" data-go="autonomous-run:">Autonomous run</a></td>
+</tr>
+<tr>
+<td>Run a standing project across days and many PRs</td>
+<td><a href="#orchestrate" data-go="orchestrate:">Orchestrate</a></td>
+</tr>
+<tr>
+<td>Take over work another agent left in flight</td>
+<td><a href="#session-pickup" data-go="session-pickup:">Session pickup</a></td>
+</tr>
+<tr>
+<td>Stop work safely so you can resume later</td>
+<td><a href="#pause-safely" data-go="pause-safely:">Pause safely</a></td>
+</tr>
+<tr>
+<td>Free disk space from old worktrees</td>
+<td><a href="#worktree-cleanup" data-go="worktree-cleanup:">Worktree cleanup</a></td>
+</tr>
+</tbody>
+</table></div>
+<p>No row fits? Type <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/SKILL.md" target="_blank" rel="noopener"><code>/poteto-mode</code></a> with your task anyway. When no playbook matches, it uses <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/figure-it-out/SKILL.md" target="_blank" rel="noopener"><code>/figure-it-out</code></a> to design one for the job.</p>
+<h2>Three habits that make every playbook work better</h2>
+<ul>
+<li><strong>Say "new task" when you change subject.</strong> This tells <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/SKILL.md" target="_blank" rel="noopener"><code>/poteto-mode</code></a> to choose a fresh playbook instead of continuing the last one.</li>
+<li><strong>Keep the mode on.</strong> Pick <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/SKILL.md" target="_blank" rel="noopener"><code>/poteto-mode</code></a> from the <code>/</code> menu and press Option+Enter (Mac) or Alt+Enter (Windows). It becomes a Custom Mode that stays in context on every turn. Then short follow-ups such as "continue" are enough.</li>
+<li><strong>Ask for evidence you can inspect.</strong> A video, a screenshot, a command output, or a before-and-after number. A reply that says "done" without evidence is a warning sign.</li>
+</ul>
+<p>New to all of this? Start with the <a href="index.html">tutorial</a>.</p></article></section><section role="tabpanel" id="p-investigation" aria-labelledby="t-investigation" hidden><article><h1>Investigation</h1>
+<p><strong>Use it when.</strong> You have a question about how something works, why it was built that way, or whether to pick option A or B, and you want an answer without any code change.</p>
+<p><strong>In plain words.</strong> An investigation is read-only. The agent reads the code and the history and writes a cited explanation. A cited explanation points at the files and facts that back each claim, so you can check them. The playbook uses the <code>how</code> skill to explain mechanics and the <code>why</code> skill to explain motivation. If your question is a choice between options, you get a recommendation with a trade-offs table instead.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Routes the question through the <code>how</code> skill. For questions about motivation, it also routes through the <code>why</code> skill.</li>
+<li>Writes one line for the throughput checkpoint, which reads <code>throughput checkpoint: n/a, read-only investigation</code>.</li>
+<li>Writes the answer in the <code>how</code> shape. The sections are Overview, Key Concepts, How It Works, Where Things Live and Gotchas.</li>
+<li>Writes a recommendation with a trade-offs table instead, if the question is a decision between alternatives.</li>
+<li>Applies the <code>unslop</code> skill to the reply.</li>
+<li>Opens no PR, runs no babysit, and skips <code>architect</code>. If the findings point to a code change, it hands back to you, and the change becomes a new Bug fix or Feature task.</li>
+</ol>
+<p><strong>What you get back.</strong> The investigation output itself. For an "are we sure?" question, the reply includes the agent's real judgment with reasons. The agent pushes back if your premise is wrong.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode investigate why &lt;symptom&gt;. give me what we know, what data you used, and your best hypotheses. don't change any code yet.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode investigate why the shop's order emails go out twice for some customers. give me what we know, what data you used, and your best hypotheses. don't change any code yet.
+</code></pre>
+<pre><code class="language-text">/poteto-mode new task. figure out how &lt;feature&gt; works end to end and where it lives. don't change any code yet.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode new task. figure out how the notes app saves a note from the editor to the database and where it lives. don't change any code yet.
+</code></pre>
+<pre><code class="language-text">/poteto-mode should we use &lt;option a&gt; or &lt;option b&gt; for &lt;decision&gt;? don't change any code yet. are we sure? give me your real judgment.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode should we use csv or json for the nightly export? don't change any code yet. are we sure? give me your real judgment.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>don't change any code yet</code></td>
+<td>Routes the task to Investigation and keeps it read-only.</td>
+</tr>
+<tr>
+<td><code>new task</code></td>
+<td>Tells <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/SKILL.md" target="_blank" rel="noopener"><code>/poteto-mode</code></a> to match a playbook again instead of continuing the previous one.</td>
+</tr>
+<tr>
+<td><code>give me what we know, what data you used, and your best hypotheses</code></td>
+<td>Makes the agent separate its evidence from its guesses.</td>
+</tr>
+<tr>
+<td><code>are we sure?</code></td>
+<td>Asks for the agent's real judgment with reasons.</td>
+</tr>
+<tr>
+<td><code>why was it built this way</code></td>
+<td>Adds the <code>why</code> skill for questions about motivation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>The agent does not change code in this playbook. Start the fix as a new task.</li>
+<li>A mode that is already in the middle of a Feature can treat your question as the next feature step. Add <code>new task</code> and <code>don't change any code yet</code> to avoid this.</li>
+<li>The agent can push back if your question rests on a wrong premise. Read that part of the reply first.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>bug-fix</code> and <code>feature</code> for the change that follows, <code>prototype</code> when a question can be settled by trying it, and the <code>how</code> and <code>why</code> skills.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/investigation.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-runtime-forensics" aria-labelledby="t-runtime-forensics" hidden><article><h1>Runtime Forensics</h1>
+<p><strong>Use it when.</strong> Something is going wrong in a running program, such as a memory leak, a CPU spin while idle, or a visual glitch, and you want the cause before any fix.</p>
+<p><strong>In plain words.</strong> Forensics means finding the cause from evidence. Here the agent attaches to the live process and measures it, instead of guessing from the source. It captures a real artifact, such as a CPU profile or a heap snapshot, and reduces it to the one finding that explains the symptom. Then it tests that finding on the running process before it believes it. The deliverable is a diagnosis, not a fix.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Captures the live signal on the matching surface through the control skill. A spinning process gets a CPU profile, a leak gets a heap snapshot, and a visual glitch gets a CDP trace. CDP is the Chrome DevTools Protocol.</li>
+<li>Reduces the artifact to the smoking gun. Examples are the function on the hot path, the retainer chain from the leaked object to a GC root, or the loop that fires without input.</li>
+<li>Parses large artifacts in a subagent, following the <code>guard-the-context-window</code> principle skill. The main thread keeps only the reduced finding.</li>
+<li>Proves the mechanism. It injects instrumentation through CDP eval on the running process, or hotfixes the live code without reloading, to confirm the hypothesis cheaply.</li>
+<li>Maps the finding back to source, meaning the file, the symbol and the line that allocates or schedules.</li>
+<li>Writes one line for the throughput checkpoint, which reads <code>throughput checkpoint: n/a, read-only forensics</code>.</li>
+</ol>
+<p><strong>What you get back.</strong> The signal captured, the reduced finding, how the agent proved the mechanism, the source location and the artifact paths. There is no fix unless you ask for one.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode &lt;app&gt; uses &lt;symptom&gt; when &lt;situation&gt;. capture a live profile or snapshot, find the cause, prove the mechanism, and tell me the source line. no fix yet.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode the web shop admin page uses 100% cpu when it is open and nobody touches it. capture a live profile, find the cause, prove the mechanism, and tell me the source line. no fix yet.
+</code></pre>
+<pre><code class="language-text">/poteto-mode memory in &lt;app&gt; keeps growing after &lt;action&gt;. take heap snapshots, find what holds the leaked objects, and show me the file and line that allocates them. diagnosis only.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode memory in the notes app keeps growing after i open and close a note 50 times. take heap snapshots, find what holds the leaked objects, and show me the file and line that allocates them. diagnosis only.
+</code></pre>
+<pre><code class="language-text">/poteto-mode &lt;element&gt; flickers when &lt;action&gt;. trace it live and tell me what causes it. don't fix it yet.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode the login form button flickers when i type in the password field. trace it live and tell me what causes it. don't fix it yet.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>no fix yet</code></td>
+<td>Keeps the deliverable a diagnosis, which is the default for this playbook.</td>
+</tr>
+<tr>
+<td><code>capture a live profile</code></td>
+<td>Names the signal to capture for a spinning process.</td>
+</tr>
+<tr>
+<td><code>take heap snapshots</code></td>
+<td>Names the signal to capture for a leak.</td>
+</tr>
+<tr>
+<td><code>prove the mechanism</code></td>
+<td>Asks for the live test of the hypothesis from step 4.</td>
+</tr>
+<tr>
+<td><code>tell me the source line</code></td>
+<td>Asks for the file, symbol and line mapping from step 5.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>This playbook instruments a live process. If you already have a saved capture, use Trace forensics.</li>
+<li>It gives no fix unless you ask. Once the cause is known, hand back to Bug fix or Perf issue.</li>
+<li>A finding the agent has not proved on the running process is a hypothesis. Check that the reply says how the mechanism was proved.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>trace-forensics</code> for a saved capture, <code>bug-fix</code> and <code>perf-issue</code> for the fix that follows, and the <code>guard-the-context-window</code> principle skill.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/runtime-forensics.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-trace-forensics" aria-labelledby="t-trace-forensics" hidden><article><h1>Trace Forensics</h1>
+<p><strong>Use it when.</strong> You already have a captured profiling file, such as a cpuprofile, a trace, a spindump or a heap snapshot, and you want to know what it says about the cause.</p>
+<p><strong>In plain words.</strong> A trace is a recorded timeline of a program run. In this playbook the capture is fixed data, so the agent reads it and does not run the program again. It loads the file into a sqlite database, which is a small file-based database you can query with SQL. Then it asks questions of the data until the cause shows up. The deliverable is a diagnosis, not a fix.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Identifies the format and loads it with the right tool. A parser for cpuprofile and <code>.json.gz</code>, a text editor for a spindump, heap tooling for a heapsnapshot.</li>
+<li>Parses large artifacts in a subagent, following the <code>principle-guard-the-context-window</code> skill. The main thread keeps only the reduced finding.</li>
+<li>Dumps the trace or heap snapshot into sqlite, with one row per sample, frame or node. It gets to a queryable shape before it reads.</li>
+<li>Narrows to the cause. It queries for the frames that hold the most time and walks the call tree to the hot path. For a leak, it follows the retainer chain to a GC root. For a spindump, it finds the thread stuck on-CPU or blocked, and its wait reason.</li>
+<li>Attributes the hot frame to a file, symbol and line through the artifact's own symbols. A frame with no source mapping is not a diagnosis yet. The agent resolves the symbols or says the artifact does not carry them.</li>
+<li>Diffs a paired before and after capture if one exists. Without a pair, it marks the finding as the strongest hypothesis the artifact supports, not a confirmed cause.</li>
+<li>Hands back a cited diagnosis with the throughput checkpoint line <code>throughput checkpoint: n/a, read-only forensics</code>.</li>
+</ol>
+<p><strong>What you get back.</strong> The artifact and its format, the reduced finding, the source location, the artifact paths, and whether a paired capture confirmed it.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode here's a cpuprofile from &lt;slow thing&gt;. tell me where the time goes and which source lines own it. no fix yet.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode here's a cpuprofile from the slow csv export. tell me where the time goes and which source lines own it. no fix yet.
+</code></pre>
+<pre><code class="language-text">/poteto-mode here's a heap snapshot taken after &lt;action&gt;. find what is leaking, show the retainer chain, and map it to source. diagnosis only.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode here's a heap snapshot taken after opening 50 product pages in the web shop. find what is leaking, show the retainer chain, and map it to source. diagnosis only.
+</code></pre>
+<pre><code class="language-text">/poteto-mode here are two traces of &lt;operation&gt;, one before the change and one after. diff them and tell me what got slower. no fix yet.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode here are two traces of the checkout page load, one before the change and one after. diff them and tell me what got slower. no fix yet.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>no fix yet</code></td>
+<td>Keeps the deliverable a diagnosis, which is the default for this playbook.</td>
+</tr>
+<tr>
+<td><code>which source lines own it</code></td>
+<td>Asks for the file, symbol and line attribution from step 5.</td>
+</tr>
+<tr>
+<td><code>show the retainer chain</code></td>
+<td>Asks for the path from a leaked object to a GC root.</td>
+</tr>
+<tr>
+<td><code>here are two traces</code></td>
+<td>Gives the agent a paired capture to diff, so the finding can be confirmed.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>The agent does not re-run the program. If the capture does not exist yet, use Runtime forensics.</li>
+<li>Without a paired capture, the finding is labeled a hypothesis. Read the end of the reply for that label.</li>
+<li>If the artifact has no symbols, the agent says so. It does not guess a source line.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>runtime-forensics</code> when no capture exists, <code>bug-fix</code> and <code>perf-issue</code> for the fix that follows, and the <code>principle-guard-the-context-window</code> skill.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/trace-forensics.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-bug-fix" aria-labelledby="t-bug-fix" hidden><article><h1>Bug Fix</h1>
+<p><strong>Use it when.</strong> You have a reported defect and you want it reproduced, traced to its root cause, and fixed with proof that it is gone.</p>
+<p><strong>In plain words.</strong> The agent runs the program itself and makes the bug happen before it touches any code. Then it narrows down the cause by ruling out candidate explanations one at a time, using runtime evidence. It ships only the smallest change that the evidence justifies. A guess that "might help" does not ship. The fix is checked on the same surface where the bug was first seen, so a passing unit test alone does not count.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Reproduces the bug itself on the matching surface through the control skill. It asks you only when it can state a specific reason the control surface cannot reach the target.</li>
+<li>Binary-searches the cause. A binary search splits the possible causes in half each time. It forms candidate hypotheses, seeds them with <code>how</code> and <code>why</code> (for regression history), and rules them out with runtime evidence until one survives. It can use Cursor's <code>/loop</code> command for a long hunt.</li>
+<li>Plans the fix. If the fix crosses a function boundary, it runs <code>architect</code> first. It delegates the implementation to a subagent with a specific scope.</li>
+<li>Verifies on the same surface. The original repro must now pass. A result of "inconclusive" or a check on the wrong surface is not a pass, and the agent flags it.</li>
+<li>Stages the commits so the failing repro lands before the fix in git history. When the bug has a cheap local test, it follows the <code>tdd</code> skill for the failing-test-first order.</li>
+<li>Runs the Opening a PR playbook.</li>
+</ol>
+<p><strong>What you get back.</strong> What was broken, the root cause, the fix, and how it was verified. The reply pastes the failing and then passing repro output verbatim.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode &lt;bug in plain words&gt;. repro it first. if there's a cheap test path, /tdd it. then fix and rerun the repro to show it passes.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode the web shop cart total is wrong when i apply a discount code twice. repro it first. if there's a cheap test path, /tdd it. then fix and rerun the repro to show it passes.
+</code></pre>
+<pre><code class="language-text">/poteto-mode this pr has a subtle bug where &lt;symptom&gt; even when &lt;condition&gt;. repro it, find the root cause with runtime evidence, and show me the failing then passing output.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode this pr has a subtle bug where the notes list jumps back to the top even when i am not typing. repro it, find the root cause with runtime evidence, and show me the failing then passing output.
+</code></pre>
+<pre><code class="language-text">/poteto-mode &lt;thing&gt; breaks when &lt;trigger&gt;. repro first, then fix the root cause with the smallest change the evidence supports. done when the original repro passes.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode the csv export breaks when a product name has a comma. repro first, then fix the root cause with the smallest change the evidence supports. done when the original repro passes.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>repro first</code></td>
+<td>Gives the routing signal for Bug fix and makes the reproduction the first step.</td>
+</tr>
+<tr>
+<td><code>/tdd it</code></td>
+<td>Uses the failing-test-first order when a cheap local test path exists.</td>
+</tr>
+<tr>
+<td><code>done when the original repro passes</code></td>
+<td>Gives a checkable outcome that matches step 4.</td>
+</tr>
+<tr>
+<td><code>show me the failing then passing output</code></td>
+<td>Matches the reply, which pastes both outputs verbatim.</td>
+</tr>
+<tr>
+<td><code>with runtime evidence</code></td>
+<td>Matches the rule that every shipped line traces to runtime evidence.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>A fix without runtime evidence is a hypothesis, and the playbook does not ship it. If evidence refutes a hypothesis, the agent reverts what it motivated.</li>
+<li>Unit tests show branch behavior, not bug absence. The repro on the original surface is the proof.</li>
+<li>The agent can ask you to reproduce the bug only with a stated, specific reason. If it asks without one, remind it of that rule.</li>
+<li>A good habit is to name the surface in your prompt, for example the browser page or the command, so the agent drives the right one.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>runtime-forensics</code> and <code>trace-forensics</code> when you want the cause before the fix, <code>perf-issue</code> for slowness, and the <code>tdd</code>, <code>how</code>, <code>why</code> and <code>architect</code> skills.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/bug-fix.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-perf-issue" aria-labelledby="t-perf-issue" hidden><article><h1>Perf Issue</h1>
+<p><strong>Use it when.</strong> Something is measurably slow and you want it traced, fixed, and shown faster with before and after numbers.</p>
+<p><strong>In plain words.</strong> The agent measures first and fixes second. It captures a baseline, which is the starting measurement, and it checks that the measurement is trustworthy. Then it tries ideas in a fixed order from cheapest to most expensive, called the performance mantras. The cheapest idea is to not do the work at all. It stops at the first idea that meets the target and proves the result with a second measurement.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Captures a baseline trace through the matching control skill. It checks the baseline, and each later number, with the <code>benchmark-checklist</code> skill.</li>
+<li>Grounds hypotheses with <code>how</code>. It does not claim a performance ceiling without running it first.</li>
+<li>Tries the performance mantras in order, cheapest first. They are don't do it, do it but don't do it again, do it less, do it later, do it when they're not looking, do it concurrently, and do it cheaper. When an earlier mantra meets the target, it stops.</li>
+<li>Plans the fix from the trace. If the fix crosses a function boundary, it runs <code>architect</code> first. It delegates the implementation to a subagent, reviews the diff, and captures a post-fix trace. It verifies each attempt before the next, following <code>sequence-verifiable-units</code>.</li>
+<li>Parses and compares the artifacts, for example JSON into sqlite and a diff. A result of "inconclusive" or a check on the wrong surface is not a pass, and the agent flags it.</li>
+<li>Cites the measurement in the PR, then runs the Opening a PR playbook.</li>
+</ol>
+<p><strong>What you get back.</strong> The baseline number, the post-fix number, the delta and the artifact path.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode &lt;operation&gt; takes &lt;time&gt; on &lt;fixture&gt;. trace it, fix the measured cause, show me before and after.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode the product search page takes 1.8s to load on the demo shop data. trace it, fix the measured cause, show me before and after.
+</code></pre>
+<pre><code class="language-text">/poteto-mode &lt;operation&gt; is slow when &lt;condition&gt;. capture a baseline trace, try the cheapest fix first, and cite the before and after numbers in the pr.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode the csv export is slow when there are 50000 orders. capture a baseline trace, try the cheapest fix first, and cite the before and after numbers in the pr.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>trace it</code></td>
+<td>Starts with a baseline trace, as in step 1.</td>
+</tr>
+<tr>
+<td><code>show me before and after</code></td>
+<td>Matches the reply, which gives the baseline, post-fix number, delta and artifact path.</td>
+</tr>
+<tr>
+<td><code>try the cheapest fix first</code></td>
+<td>Matches the order of the performance mantras.</td>
+</tr>
+<tr>
+<td><code>cite the numbers in the pr</code></td>
+<td>Matches step 6, which cites the measurement in the PR.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>The playbook ties every fix to a measurement. It does not read the source instead of measuring.</li>
+<li>A baseline the <code>benchmark-checklist</code> skill rejects is not a baseline. Expect the agent to fix the measurement first.</li>
+<li>This is a one-off fix. For sustained improvement against a metric, use the Hillclimb playbook.</li>
+<li>If you want the cause only and no fix, use Runtime forensics or Trace forensics.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>hillclimb</code> for sustained work, <code>trace-forensics</code> for an existing capture, <code>bug-fix</code> for incorrect behavior, and the <code>benchmark-checklist</code> skill.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/perf-issue.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-hillclimb" aria-labelledby="t-hillclimb" hidden><article><h1>Hillclimb</h1>
+<p><strong>Use it when.</strong> You want to improve one measurable number step by step toward a target, and a single fix is not enough.</p>
+<p><strong>In plain words.</strong> Hillclimbing is a loop. The agent changes one thing, measures, and keeps the change only if the number improves past noise and the tests stay green. Otherwise it reverts the change fully. Before the loop starts, the agent builds one repeatable measurement command and freezes it, so every attempt is judged the same way. It writes every attempt to a decision log, so you can see what was tried and why it was kept or dropped.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Grounds the workload with the <code>how</code> skill. It picks a case that reproduces your complaint, then fixes one metric, the direction that counts as better, and a stop predicate. The predicate pairs a target with a minimum number of attempts, for example "at least 50% better than baseline and at least 10 iterations".</li>
+<li>Builds the measurement harness, proves it can tell cases apart, and freezes it. It vets the harness with <code>benchmark-checklist</code>. It uses a median of N runs, and it records the baseline and a green run of the regression gate, which is the set of tests that must keep passing.</li>
+<li>Opens a decision log with the <code>show-me-your-work</code> skill. It is a <code>decision.tsv</code> with one row per attempt, kept out of the tree.</li>
+<li>Grounds each hypothesis in a specific mechanism. For a performance metric, it orders hypotheses by the performance mantras from the Perf issue playbook.</li>
+<li>Loops one hypothesis at a time. A subagent makes the change. The agent measures before and after, runs the regression gate, keeps a change only if the metric moves past noise and the gate stays green, and otherwise reverts it in full. It makes one commit per accepted fix and logs every row.</li>
+<li>Pushes past the first plateau by pivoting category, combining near-misses, re-reading the source, or trying something more radical. Correctness and simplicity outrank the number.</li>
+<li>Stops when the predicate is met, or when the remaining ideas are marginal.</li>
+<li>Runs the Opening a PR playbook with the accepted commits stacked in the order they landed.</li>
+</ol>
+<p><strong>What you get back.</strong> The metric and target, the baseline and final values with the percent change, the iterations run (kept versus reverted), one line per accepted fix, the <code>decision.tsv</code> path, and the best idea to try next.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode hillclimb &lt;metric&gt; on &lt;workload&gt;. target is at least &lt;percent&gt;% better than baseline and at least &lt;n&gt; iterations. one change, one measurement, keep or revert.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode hillclimb the page load time of the product search page on the demo shop data. target is at least 50% better than baseline and at least 10 iterations. one change, one measurement, keep or revert.
+</code></pre>
+<pre><code class="language-text">/poteto-mode &lt;operation&gt; is too slow on &lt;fixture&gt;. hillclimb it. freeze a measurement harness first, keep the &lt;test command&gt; green, and log every attempt in decision.tsv.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode the csv export is too slow on 50000 orders. hillclimb it. freeze a measurement harness first, keep the unit tests green, and log every attempt in decision.tsv.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hillclimb</code></td>
+<td>Names the playbook for sustained improvement of one metric.</td>
+</tr>
+<tr>
+<td><code>at least &lt;percent&gt;% better than baseline and at least &lt;n&gt; iterations</code></td>
+<td>Sets the stop predicate in the target-plus-attempts shape from step 1.</td>
+</tr>
+<tr>
+<td><code>one change, one measurement, keep or revert</code></td>
+<td>States the core discipline of the loop.</td>
+</tr>
+<tr>
+<td><code>keep &lt;tests&gt; green</code></td>
+<td>Names the regression gate.</td>
+</tr>
+<tr>
+<td><code>log every attempt in decision.tsv</code></td>
+<td>Matches the decision log in step 3.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>If no case reproduces your complaint, the agent fixes the repro first and does not hillclimb.</li>
+<li>The agent does not relax the stop predicate to meet it. If it is stuck, it says so instead of spinning.</li>
+<li>A change that "might help" is not kept. Only a change that moves the metric past noise with a green gate is kept.</li>
+<li>For a single fix, use Perf issue or Bug fix. This playbook is the loop.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>perf-issue</code> for a one-off fix, <code>autonomous-run</code> for unattended runs, and the <code>how</code>, <code>benchmark-checklist</code> and <code>show-me-your-work</code> skills.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/hillclimb.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-feature" aria-labelledby="t-feature" hidden><article><h1>Feature</h1>
+<p><strong>Use it when.</strong> You want new or changed behavior in your code, such as a new flag, a new page, or a new export option.</p>
+<p><strong>In plain words.</strong> The agent acts as the lead designer. It studies the code, explores designs, and then hands the actual code-writing to a subagent (a helper agent that works on a narrow job). It names the data shape first, such as a table or a state machine, so the helper does not invent structure on the fly. A review and a check on the real running surface come before anything ships. The playbook works this way so the agent that designs also reviews, which catches mistakes the writer would miss.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Runs <code>how</code> over the part of the code the feature touches.</li>
+<li>Runs <code>architect</code> to explore design options in parallel.</li>
+<li>Writes a four-item "throughput checkpoint" as todo items. The items are blocking first steps, independent workstreams, shared mutable state, and the smallest safe decomposition. An item that does not apply stays on the list with <code>n/a: &lt;reason&gt;</code>.</li>
+<li>Delegates the code to a subagent with a specific scope. The scope names the file paths, the data shape, and the success criteria. When several valid shapes exist, it uses the <code>arena</code> skill instead.</li>
+<li>Verifies on the matching surface. A result of "inconclusive" or a check on the wrong surface is not a pass, and the agent flags it.</li>
+<li>Rebases the work into small, ordered commits, using the <code>sequence-verifiable-units</code> principle skill.</li>
+<li>Runs <code>interrogate</code> before shipping if the design is contested.</li>
+<li>Runs the Opening a PR playbook.</li>
+</ol>
+<p><strong>What you get back.</strong> A reply with what the agent built, what it chose and why, the throughput checkpoint, and the open decisions. Design alternatives appear in tables.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode add &lt;new behavior&gt; to &lt;where&gt;. &lt;what must stay the same&gt;. verify &lt;how you will check it&gt; and show me the evidence.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode add a --json flag to the export command. text output stays byte-identical. verify both forms against the sample project and show me the evidence.
+</code></pre>
+<pre><code class="language-text">/poteto-mode build &lt;feature&gt; behind a feature flag. /architect it first and let me review before you build.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode build a wishlist button on the product page behind a feature flag. /architect it first and let me review before you build.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/architect it first</code></td>
+<td>Runs <code>architect</code> for parallel design exploration before the build.</td>
+</tr>
+<tr>
+<td><code>let me review before proceeding</code></td>
+<td>Stops after design so you can review (a pattern from the guide).</td>
+</tr>
+<tr>
+<td><code>verify both forms</code> or <code>show me the evidence</code></td>
+<td>Asks for a check on the real surface and proof in the reply.</td>
+</tr>
+<tr>
+<td><code>text output stays byte-identical</code></td>
+<td>States what must not change, so the agent can check it.</td>
+</tr>
+<tr>
+<td><code>/interrogate it before shipping</code></td>
+<td>Asks for <code>interrogate</code> on a design you expect to be contested.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>The playbook delegates the code-writing. It has no skip-with-reason escape, even for a small diff.</li>
+<li>"Inconclusive" is not a pass. If the agent could not check on the real surface, it must say so.</li>
+<li>Code-coupled work, such as one feature or one migration, goes to a single owner. Parent-level fan-out suits independent artifacts only.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>refactoring</code> for structure-only work, <code>prototype</code> to settle a design first, and the <code>architect</code>, <code>arena</code>, and <code>interrogate</code> skills.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/feature.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-refactoring" aria-labelledby="t-refactoring" hidden><article><h1>Refactoring</h1>
+<p><strong>Use it when.</strong> You want to change how code is organized, such as a rename, an extract, a move, or a dedupe, without changing what it does.</p>
+<p><strong>In plain words.</strong> A refactor changes structure and keeps behavior. To prove that, the agent first records what the code does today. This record is a "pin", such as a characterization test (a test that captures current output, right or wrong) or a snapshot. Every later step must keep the pin green. The playbook also removes dead code before it adds anything, and it reverts a change that does not make the code easier to read.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Pins the behavior first. It runs <code>how</code> over the subsystem, then writes a characterization test, snapshot, or equivalence harness. Type check and lint are not a pin.</li>
+<li>Names the structure the code is missing, per <code>principle-model-the-domain</code>. The reshape must delete branches or invalid states, not add indirection.</li>
+<li>Names the target shape. If the target crosses a function boundary, it runs <code>architect</code>.</li>
+<li>Subtracts before adding. It deletes dead code, one-caller wrappers, and redundant validators first.</li>
+<li>Moves in small steps that each keep the pin green. For API changes it migrates every caller and deletes the old API in the same wave. It spot-checks every rename against the real files and delegates mechanical edits to a subagent.</li>
+<li>Proves behavior is unchanged on the real artifact. For larger reshapes it runs an equivalence check, such as a script that diffs old and new output.</li>
+<li>Confirms the change lowers reader load. If it does not, the agent reverts it.</li>
+<li>Rebases into small ordered commits (subtraction, then reshape, then cleanup) and runs the Opening a PR playbook.</li>
+</ol>
+<p><strong>What you get back.</strong> The structure that changed, the pin it held against, the equivalence proof, the reader-load change, and what shipped or got reverted. The change adds no new behavior.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode move &lt;code&gt; into &lt;new place&gt;, zero behavior change. record the current output first and prove it's unchanged after.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode move the csv parsing in the import script into one module, zero behavior change. record the current output first and prove it's unchanged after.
+</code></pre>
+<pre><code class="language-text">/poteto-mode refactor &lt;area&gt; so &lt;goal&gt;. behavior must stay identical. delete dead code first and show me the before and after diff of outputs.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode refactor the cart code so the price rules live in one table. behavior must stay identical. delete dead code first and show me the before and after diff of outputs.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>zero behavior change</code></td>
+<td>States the contract the pin must hold.</td>
+</tr>
+<tr>
+<td><code>record the current output first</code></td>
+<td>Asks for the pin before structure moves.</td>
+</tr>
+<tr>
+<td><code>prove it's unchanged after</code></td>
+<td>Asks for the equivalence proof on the real artifact.</td>
+</tr>
+<tr>
+<td><code>delete dead code first</code></td>
+<td>Matches the subtract-before-add step.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>If cleanup reveals a missing feature or a real bug, the playbook splits it out. The structural change ships first against the pinned contract.</li>
+<li>A redesign is allowed, but the agent names it and routes it to <code>feature</code>.</li>
+<li>Large or cross-cutting structural work belongs to the <code>figure-it-out</code> skill, not this playbook.</li>
+<li>A cleanup that does not lower reader load gets reverted.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>feature</code> for new behavior, the bug fix playbook for defects, <code>figure-it-out</code> for large moves, and the <code>how</code> and <code>architect</code> skills.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/refactoring.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-prototype" aria-labelledby="t-prototype" hidden><article><h1>Prototype</h1>
+<p><strong>Use it when.</strong> You are unsure which design, layout, or behavior to pick and want a cheap throwaway sketch to decide.</p>
+<p><strong>In plain words.</strong> A prototype is a quick model built only to answer one question. Speed matters more than polish, and the code is thrown away. The playbook asks the agent to scope the decision first, because no decision means no prototype. For a visual choice it builds the options behind one switcher and takes screenshots. For a behavior or timing choice it builds the smallest script and watches the result.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Scopes the decision the prototype exists to make. With no decision, it routes to <code>feature</code>.</li>
+<li>Gathers references when the design space is open. It searches prior art and summarizes a moodboard, and you pick directions before it builds. It skips this when the direction is set.</li>
+<li>Builds throwaway code in an isolated scratch directory. Visual work uses vanilla HTML, CSS, and JS or the lightest stack that renders it. Behavior work uses the smallest script. It adds no production framework, no tests, and no abstractions.</li>
+<li>Puts alternatives behind one switcher, with each variant labeled.</li>
+<li>Verifies on the matching surface. For visual work it screenshots each variant. For behavior or timing it logs, prints, or watches the output.</li>
+<li>Presents alternatives, tradeoffs, and a recommendation, then hands the chosen direction to <code>feature</code> (or <code>architect</code> for the shape).</li>
+</ol>
+<p><strong>What you get back.</strong> The variants explored, the evidence (screenshots, or the observed output or timing), tradeoffs, a recommendation, and the scratch path. The reply says plainly that the prototype is throwaway.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode prototype a few options for &lt;ui piece&gt;. put them behind a switcher and send me screenshots of each.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode prototype a few options for the settings page layout. put them behind a switcher and send me screenshots of each.
+</code></pre>
+<pre><code class="language-text">/poteto-mode build two prototypes of &lt;thing&gt; so we can compare. spawn an agent for each. recommend one.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode build two prototypes of the search results list so we can compare. spawn an agent for each. recommend one.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prototype</code>, <code>mock it up</code>, <code>try this layout</code>, <code>sketch it to decide</code></td>
+<td>Routing phrases for this playbook.</td>
+</tr>
+<tr>
+<td><code>put them behind a switcher</code></td>
+<td>Matches the one-switcher step.</td>
+</tr>
+<tr>
+<td><code>take screenshots or videos for me to compare</code></td>
+<td>Asks for visual evidence per variant.</td>
+</tr>
+<tr>
+<td><code>spawn an agent for each</code></td>
+<td>Builds each option in its own agent (an example from the README).</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>The prototype is throwaway. Do not ship it.</li>
+<li>This playbook inverts the usual "smallest change" and verification bar. Code quality does not matter here.</li>
+<li>The real build follows the <code>feature</code> playbook.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>feature</code> for the real build, <code>multi-phase-plan</code> (which runs this playbook for open questions), and the <code>architect</code> skill.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/prototype.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-visual-parity" aria-labelledby="t-visual-parity" hidden><article><h1>Visual parity</h1>
+<p><strong>Use it when.</strong> A screen must match a reference exactly, such as two versions of a component or a styling-system migration.</p>
+<p><strong>In plain words.</strong> Pixel-exact means every pixel matches. The agent proves this with an image diff, which compares two screenshots and reports differing pixels. It does not judge by eye. The baseline (the screenshots of the current version) is the spec. The agent must not edit it or the harness to make a diff pass. If the baseline looks wrong, the agent stops and asks you.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Establishes the baseline before any migration. This is a visual regression harness that screenshots the component across its states, plus the target when matching two implementations. No baseline means no parity claim.</li>
+<li>States the anti-shortcut clauses. There are no harness changes, no baseline tampering, and no component restructuring to make a diff pass. A baseline that looks wrong means stop and ask.</li>
+<li>Migrates one component at a time, with one owner per component in parallel worktrees. Shared primitives migrate first.</li>
+<li>Verifies each component against its baseline with an image diff on the matching surface through the control skill. A nonzero diff is a fail. It investigates the pixel difference and runs <code>/loop</code> per component until the diff is zero.</li>
+<li>Runs the Opening a PR playbook per component or per safe batch.</li>
+</ol>
+<p><strong>What you get back.</strong> The components migrated, the diff result for each, the baseline harness location, and what is left.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode &lt;what looks wrong&gt; in &lt;place&gt;. the &lt;reference&gt; is correct. repro and fix until it matches pixel for pixel.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode the row spacing is too tall in the orders table when the compact flag is on. the second image is correct. repro and fix until it matches pixel for pixel.
+</code></pre>
+<pre><code class="language-text">/poteto-mode migrate &lt;components&gt; to &lt;new styling&gt;. the result must match the original exactly, bugs included. image diff each component against a frozen baseline.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode migrate the button and card components to the new styling system. the result must match the original exactly, bugs included. image diff each component against a frozen baseline.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>must match the original exactly, bugs included</code></td>
+<td>Keeps the migration from fixing things on the way (from the guide).</td>
+</tr>
+<tr>
+<td><code>the second image is correct</code></td>
+<td>Names the reference to match.</td>
+</tr>
+<tr>
+<td><code>repro and fix until it matches</code></td>
+<td>Asks for the loop until the diff is zero.</td>
+</tr>
+<tr>
+<td><code>image diff against a frozen baseline</code></td>
+<td>Names the verification the playbook expects.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>A nonzero diff is a fail.</li>
+<li>The agent must not edit the baseline or harness. It stops and asks if the baseline looks wrong.</li>
+<li>Without a baseline there is no parity claim, and building it is the first step.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>multi-phase-plan</code> for a migration plan with visual checks, <code>feature</code> for new UI, and the control skill for screenshots.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/visual-parity.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-multi-phase-plan" aria-labelledby="t-multi-phase-plan" hidden><article><h1>Multi-phase or multi-PR plan</h1>
+<p><strong>Use it when.</strong> The work spans several phases or stacked pull requests, and you want a written plan before anyone builds.</p>
+<p><strong>In plain words.</strong> This playbook produces a plan file and does not write the code. The plan is a checklist. An "owner" agent runs it box by box, and you audit from the evidence each box names. Each pull request (PR) gets its own section with its own proof. The playbook applies one verification rule. Tests alone are not enough, and each PR needs its unit, live, and perf boxes all checked.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Skips the plan if the change is one or two files with an obvious approach. It says so and stops.</li>
+<li>Settles open questions by running the <code>prototype</code> playbook for each. It keeps the branch, SHA, and screenshots for Appendix A. It asks you only about product or preference calls no run can settle.</li>
+<li>Explores in subagents. Each returns file pointers, conventions, test commands, and entry points, not inlined dumps.</li>
+<li>Copies the plan skeleton into the plan file and fills every placeholder. One section per PR. It names the execution playbook, <code>autopilot-full</code> or <code>autopilot-stack</code>, in "How to read this".</li>
+<li>Writes under <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/technical-writing/SKILL.md" target="_blank" rel="noopener"><code>/technical-writing</code></a>, then <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/unslop/SKILL.md" target="_blank" rel="noopener"><code>/unslop</code></a>.</li>
+<li>Runs <code>node pstack/skills/poteto-mode/scripts/check-plan.mjs &lt;plan.md&gt;</code> and fixes every line it prints.</li>
+<li>Hands back the plan path and the script's output, then stops. Execution starts only on your explicit go.</li>
+</ol>
+<p><strong>What you get back.</strong> The plan path, the PR ids with dependencies and the review-gated set, what the prototypes proved and what stays unproven, and the check script's output.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode turn this design into a plan. small verifiable PRs, each with its own verification steps.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode turn the saved-carts design into a plan. small verifiable PRs, each with its own verification steps.
+</code></pre>
+<pre><code class="language-text">/poteto-mode plan the migration of &lt;library&gt; to &lt;target&gt;. small verifiable PRs, each with visual regression checks. the result must match the original exactly, bugs included.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode plan the migration of our button library to the new styling system. small verifiable PRs, each with visual regression checks. the result must match the original exactly, bugs included.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>small verifiable PRs</code></td>
+<td>Matches one section per PR with its own evidence.</td>
+</tr>
+<tr>
+<td><code>each with its own verification steps</code></td>
+<td>Matches the unit, live, and perf verification blocks.</td>
+</tr>
+<tr>
+<td><code>answer open questions with prototypes</code></td>
+<td>Matches step 2 (the guide uses this wording).</td>
+</tr>
+<tr>
+<td><code>bugs included</code></td>
+<td>Keeps a migration from fixing things on the way (from the guide).</td>
+</tr>
+<tr>
+<td><code>show me the dependency graph first</code></td>
+<td>A README example prompt for multi-phase work.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>The plan is the deliverable. The playbook does not implement it.</li>
+<li>A PR that changes an interaction is review-gated. You review it in chat with screenshots and a video before merge.</li>
+<li>A surface with no control skill is recorded as a risk in Appendix C.</li>
+<li>The guide says a plan can live in the repo while the work runs. A good habit is to delete it when the work lands.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>prototype</code>, <code>autopilot-full</code>, <code>autopilot-stack</code>, <code>orchestrate</code>, and <code>visual-parity</code> for migrations.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/multi-phase-plan.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-authoring-a-skill" aria-labelledby="t-authoring-a-skill" hidden><article><h1>Authoring or modifying a skill</h1>
+<p><strong>Use it when.</strong> You want to write a new <code>SKILL.md</code> or edit an existing one.</p>
+<p><strong>In plain words.</strong> A skill is a folder with a <code>SKILL.md</code> file that an agent loads for a kind of task. Agent-facing prose has a high bar, because an unhelpful sentence becomes an instruction a future agent follows. So the playbook routes the work through Cursor's built-in <code>create-skill</code> skill and then validates the result. It also tells the agent to delete first and keep only prose that changes a decision.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Uses the <code>create-skill</code> skill.</li>
+<li>Validates the skill. The frontmatter has <code>name</code> and <code>description</code>, referenced files exist, and cross-skill links resolve.</li>
+<li>Adds test cases if the skill is structural. It skips them if the skill is subjective.</li>
+<li>Runs the Opening a PR playbook.</li>
+</ol>
+<p>The playbook also sets writing rules. When in doubt, delete. Tell the agent to do the thing and skip the reason, unless the rule is confusing without one. Point at structural sources and delegate to other skills by path instead of restating. If you keep repeating a workflow that no skill captures, the playbook says to propose a new skill.</p>
+<p><strong>What you get back.</strong> A summary of the skill, key design decisions, and validation notes.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode write a skill for &lt;workflow&gt;
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode write a skill for checking that every new database migration has a rollback step
+</code></pre>
+<pre><code class="language-text">/poteto-mode update the &lt;name&gt; skill so it &lt;new behavior&gt;, and eval the change.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode update the review skill so it flags missing migrations, and eval the change.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>and eval the change</code></td>
+<td>Adds the <code>eval</code> playbook to test the edit blind (from the guide).</td>
+</tr>
+<tr>
+<td><code>write a skill for ...</code></td>
+<td>Routes to this playbook (the guide's example wording).</td>
+</tr>
+<tr>
+<td><code>update the &lt;name&gt; skill</code></td>
+<td>Routes an edit of an existing skill here.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>Do not write <code>SKILL.md</code> freehand. Route it here so validation and review happen.</li>
+<li>A skill that must drive your app and prove behavior is a verification skill. The guide points to <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/create-verification-skill/SKILL.md" target="_blank" rel="noopener"><code>/create-verification-skill</code></a> and <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/maintain-verification-skill/SKILL.md" target="_blank" rel="noopener"><code>/maintain-verification-skill</code></a> for that case.</li>
+<li>Do not edit a skill mid-task because it misbehaves. The guide advises fixing it in its own PR.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>eval</code> to test a skill change blind, the <code>create-skill</code> skill, and the Opening a PR playbook.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/authoring-a-skill.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-eval" aria-labelledby="t-eval" hidden><article><h1>Eval</h1>
+<p><strong>Use it when.</strong> You changed a skill, a prompt, or a structure and want to know whether agents behave better with the change.</p>
+<p><strong>In plain words.</strong> An agent that knows it is being tested behaves differently. So this playbook hides the test. Candidate agents get an organic-looking task in plainly named directories. They never see words like "eval" or "candidate", and they never learn other candidates exist. One judge scores all outputs under neutral labels. The agent then checks which files each candidate really read, instead of trusting what the candidate says.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Frames the test. It states the variant under test and what success looks like, and writes a rubric of 3 to 6 concrete criteria for the judge only.</li>
+<li>Sets up sanitized environments. Each candidate gets its own working directory with the variant in place.</li>
+<li>Authors one organic prompt, what a user would type, with no hint of what is measured.</li>
+<li>Spawns N parallel candidates on different models, per Phase B of the <code>arena</code> skill, each in its own directory with the same prompt.</li>
+<li>Spawns one blinded judge on a different model family, per Phase C of the <code>arena</code> skill. The judge sees outputs by label and the rubric, never a model name.</li>
+<li>Verifies the chain from transcripts, not self-report. It reads each candidate's transcript under the workspace's <code>agent-transcripts/</code> directory.</li>
+<li>Reads every candidate output end to end, compares it to the judge's verdict, and synthesizes.</li>
+</ol>
+<p><strong>What you get back.</strong> The variant under test, the rubric, per-candidate notes, the judge's verdict, the agent's synthesis, and a recommendation on whether to promote the variant.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode run the eval playbook on &lt;skill or prompt change&gt;. same task for both variants, candidates stay blind.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode run the eval playbook on this change to the commit-message skill. same task for both variants, candidates stay blind.
+</code></pre>
+<pre><code class="language-text">/poteto-mode update &lt;skill&gt; so it &lt;new behavior&gt;, and eval the change. tell me whether to promote it.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode update the review skill so it flags missing migrations, and eval the change. tell me whether to promote it.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>run the eval playbook</code></td>
+<td>Routes to this playbook.</td>
+</tr>
+<tr>
+<td><code>same task for both variants</code></td>
+<td>Matches the single-prompt, single-judge comparison.</td>
+</tr>
+<tr>
+<td><code>candidates stay blind</code></td>
+<td>Matches the blinding rules.</td>
+</tr>
+<tr>
+<td><code>and eval the change</code></td>
+<td>Tests a skill edit in the same task (from the guide).</td>
+</tr>
+<tr>
+<td><code>tell me whether to promote it</code></td>
+<td>Matches the recommendation the reply ends with.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>Blinding rules are non-negotiable. The words <code>eval</code>, <code>test</code>, <code>judge</code>, <code>experiment</code>, <code>rubric</code>, <code>score</code>, <code>compare</code>, <code>benchmark</code>, <code>candidate</code>, and <code>arena</code> stay out of anything the candidate sees.</li>
+<li>Do not ask candidates to list which skills or files they used.</li>
+<li>If you disagree with the judge, the guide advises suspecting the rubric before your own judgment.</li>
+<li>The agent must not glob across <code>~/.cursor/projects/*/</code>. That reads private chats from other projects.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>authoring-a-skill</code>, the <code>arena</code> skill, and <code>hillclimb</code> for sustained metric work.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/eval.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-opening-a-pr" aria-labelledby="t-opening-a-pr" hidden><article><h1>Opening a PR</h1>
+<p><strong>Use it when.</strong> Your work is done on a branch and you want it turned into a clean pull request that a reviewer can read in about a minute.</p>
+<p><strong>In plain words.</strong> A PR (pull request) is a request to merge your branch into the main line of code, called trunk. This playbook is the last step of every other playbook, and you can also ask for it alone. It works from a git worktree, which is a separate checkout of the repo, so unrelated work cannot leak in. It splits the work into small ordered commits and writes a short description, because a reviewer who has the diff mostly needs to know why the change exists, what it leaves out, and how you proved it.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Works from a git worktree off main. Subagents inherit that worktree.</li>
+<li>Rebases the work into small, ordered commits. Each commit should be landable and tell part of the story.</li>
+<li>Runs <code>/deslop</code> from <code>cursor-team-kit</code> over the diff before commit, and <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/no-comments/SKILL.md" target="_blank" rel="noopener"><code>/no-comments</code></a> before review.</li>
+<li>Writes the PR title, description, and commit bodies with <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/technical-writing/SKILL.md" target="_blank" rel="noopener"><code>/technical-writing</code></a>, then applies <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/unslop/SKILL.md" target="_blank" rel="noopener"><code>/unslop</code></a>.</li>
+<li>Titles the PR in Conventional Commits form, <code>type(scope): subject</code>, with no trailing period.</li>
+<li>Writes the body with <code>##</code> headings in this order, dropping any section with nothing to say. The headings are <code>## Why</code>, <code>## What changed</code>, <code>## Scope</code>, <code>## Tradeoffs</code>, <code>## Blast Radius</code>, and <code>## Verification</code>.</li>
+<li>Opens the PR ready for review, never as a draft. It uses <code>gh</code> by default, or <code>origin pr</code> when the Origin CLI can resolve the repo, or the built-in PR tool when the run has one.</li>
+<li>Posts the PR URL and keeps building. It does not start a babysit.</li>
+</ol>
+<p><strong>What you get back.</strong> The PR link in the form <code>https://github.com/&lt;owner&gt;/&lt;repo&gt;/pull/&lt;number&gt;</code>. The PR body carries the why, the scope, the blast radius, and verification bullets with real run paths and outcomes. Videos or screenshots are attached when they prove a claim. Long evidence such as full SHAs goes in a linked artifact, not the body.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode open the pr for &lt;what changed&gt;. small ordered commits, evidence in the description.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode open the pr for the new coupon code field at checkout. small ordered commits, evidence in the description.
+</code></pre>
+<pre><code class="language-text">/poteto-mode open the pr. split &lt;the change&gt; into small ordered commits, strip slop from the diff, and put the proof you ran in the verification section. open it ready, not draft.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode open the pr. split the csv export fix into small ordered commits, strip slop from the diff, and put the proof you ran in the verification section. open it ready, not draft.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>small ordered commits</code></td>
+<td>Asks for the rebase into small commits that tell the story.</td>
+</tr>
+<tr>
+<td><code>evidence in the description</code></td>
+<td>Puts run paths and outcomes in the <code>## Verification</code> section.</td>
+</tr>
+<tr>
+<td><code>open it ready, not draft</code></td>
+<td>Matches the playbook's default of opening every PR ready.</td>
+</tr>
+<tr>
+<td><code>five narrow PRs</code></td>
+<td>Asks for several small PRs instead of one large one. The playbook prefers this.</td>
+</tr>
+<tr>
+<td><code>stack them</code></td>
+<td>Asks for a base-branch chain. Each child PR targets its parent's branch.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>Opening a PR does not start a babysit. Ask for Babysit separately, after the whole stack exists.</li>
+<li>The playbook does not merge. It stops at the PR link.</li>
+<li>Perf changes get one primary number in the body, in the form <code>before → after</code>, with a link for the rest.</li>
+<li>If a PR still opens as a draft, the playbook marks it ready through the PR tool, <code>origin pr ready &lt;number&gt;</code>, or <code>gh pr ready &lt;number&gt;</code>.</li>
+</ul>
+<p><strong>Pairs with.</strong> Every other playbook ends here. Next steps are <code>babysit</code> and <code>shipping</code>. Related skills are <code>/deslop</code>, <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/no-comments/SKILL.md" target="_blank" rel="noopener"><code>/no-comments</code></a>, <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/technical-writing/SKILL.md" target="_blank" rel="noopener"><code>/technical-writing</code></a>, and <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/unslop/SKILL.md" target="_blank" rel="noopener"><code>/unslop</code></a>.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/opening-a-pr.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-babysit" aria-labelledby="t-babysit" hidden><article><h1>Babysit</h1>
+<p><strong>Use it when.</strong> A PR is open and you want it driven to merge-ready, or you want a quick status check on it.</p>
+<p><strong>In plain words.</strong> A PR collects blockers as soon as it opens. Checks fail, reviewers comment, and trunk (the main branch) moves. CI means the automated checks that run on the PR. Babysit handles those blockers in a fixed order, so the checks restart as few times as possible. It stops at merge-ready, which means the forge (GitHub or Origin) agrees the PR can merge. It never merges.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Declares a mode before any poll. <code>drive</code> runs the loop to merge-ready. <code>background</code> triages without blocking. <code>threads-only</code> answers review comments only. <code>check</code> is one status pass and a report. If you give no mode, it uses <code>drive</code>.</li>
+<li>Resolves the forge. It uses <code>gh</code> by default, or <code>origin pr</code> when the Origin CLI can resolve the repo.</li>
+<li>Works only the merge frontier, which is the lowest unmerged PR in a stack. Upstack threads are read and batched, not fixed.</li>
+<li>Handles blockers in this order. Conflicts first, then review threads, then CI. It batches every known fix into one push.</li>
+<li>Reads status from <code>scripts/watch-pr/watch-pr</code> on GitHub, or from <code>origin pr view</code>, <code>origin pr thread list</code>, and <code>origin pr checks</code> on Origin. It runs <code>drive</code> and <code>background</code> under <code>/loop</code>.</li>
+<li>Classifies each CI failure before any retrigger. A flake earns one fresh build and no more. A failure in code the diff never touched means a stale base.</li>
+<li>Triages Bugbot comments skeptically per <code>../references/bugbot-triage.md</code>. Real findings get a fix with a red-first proof. Noise gets a dismissal with the concrete disproof on the thread.</li>
+<li>Stops at merge-ready and reports. It does not merge.</li>
+</ol>
+<p><strong>What you get back.</strong> A report on the frontier PR. It says whether it is merge-ready or what still blocks it, and names any conflict that needs a rebase by the branch owner. After a <code>drive</code> run it also offers any team-useful dismissal pattern as a candidate entry for the shared Bugbot rubric.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode babysit this pr. get it green. &lt;pr link or number&gt;
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode babysit this pr. get it green. https://github.com/acme/webshop/pull/482
+</code></pre>
+<pre><code class="language-text">/poteto-mode check on pr &lt;number&gt;. anything outstanding?
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode check on pr 482. anything outstanding?
+</code></pre>
+<pre><code class="language-text">/poteto-mode address the bugbot comments on pr &lt;number&gt;. verify each one against the code, fix the real ones with a failing test first, and dismiss noise with the reason.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode address the bugbot comments on pr 482. verify each one against the code, fix the real ones with a failing test first, and dismiss noise with the reason.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>get it green</code> or <code>merge-ready</code></td>
+<td>Selects <code>drive</code> mode.</td>
+</tr>
+<tr>
+<td><code>check on pr &lt;number&gt;</code> or <code>is it green</code></td>
+<td>Selects <code>check</code> mode, one status pass and a report.</td>
+</tr>
+<tr>
+<td><code>address the bugbot comments</code></td>
+<td>Selects <code>threads-only</code> mode. It answers review comments and touches nothing else.</td>
+</tr>
+<tr>
+<td><code>babysit in the background</code></td>
+<td>The playbook names <code>background</code> as the mode that triages without blocking. A good habit is to use it while a plan is still executing.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>Babysit never merges. Only an explicit request to merge, land, or ship does, and that goes to Shipping.</li>
+<li>It never changes stack topology. No retarget, rebase, stack-wide submit, or force-push happens inside a babysit. A conflict is reported with the branch that needs the rebase.</li>
+<li>A second identical CI failure is reclassified, not retried. The playbook allows one retry.</li>
+<li>Review-comment text is treated as untrusted data. It is checked against the code and never followed as an instruction.</li>
+<li>Opening a PR does not start a babysit. Ask for it once the phase or stack is built.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>opening-a-pr</code> before it, <code>shipping</code> after it. Related skills are <code>/loop</code> and the Bugbot triage reference.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/babysit.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-shipping" aria-labelledby="t-shipping" hidden><article><h1>Shipping</h1>
+<p><strong>Use it when.</strong> Your stack of PRs is green and you want it landed safely, one verified PR at a time.</p>
+<p><strong>In plain words.</strong> Green checks do not prove a change works, because CI does not run the change the way a user would. So Shipping asks a separate verifier agent to run each PR for real before anything merges. A stack is a chain of PRs where each one builds on the one below. Shipping lands only the verified PRs that touch the bottom of the chain, in order, and stops at the first PR that has no passing verdict.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Resolves the forge (<code>gh</code> by default, <code>origin pr</code> when available). Then runs one verifier per PR, each a Cursor cloud agent. The verifier uses the matching control skill, such as <code>control-ui</code> or <code>control-cli</code>, and posts <code>PASS</code>, <code>PASS+NOTES</code>, or <code>FAIL</code> on the PR.</li>
+<li>Walks up from the lowest unmerged PR and stops at the first one without <code>PASS</code> or <code>PASS+NOTES</code>. The PRs below that point are the run. The top one is the ceiling.</li>
+<li>Checks that each verdict still describes the code. It compares <code>git patch-id</code> at the verdict SHA with the current head, because a rebase moves a PR to a new SHA.</li>
+<li>Lands bottom-up, one PR at a time, with <code>origin pr merge &lt;pr&gt;</code> or <code>gh pr merge &lt;pr&gt; --squash</code>. It reads the PR back to confirm the merge, then retargets the next PR to trunk and pushes with <code>--force-with-lease</code>.</li>
+<li>Leaves the stack alone while it lands. On GitHub it watches with <code>scripts/watch-pr/watch-pr --queued-stack --stack-prs &lt;bottom-to-top&gt;</code> under <code>/loop</code> until <code>COMPLETE</code>.</li>
+<li>Stops at the ceiling. Extending the run needs new verdicts.</li>
+</ol>
+<p><strong>What you get back.</strong> The verified run and its ceiling. For each PR, its verdict and who produced it. What landed and how the merge was confirmed. What the next gap needs.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode land the stack. &lt;stack root pr or branch&gt;
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode land the stack. the root is pr 482 and three more checkout prs sit above it.
+</code></pre>
+<pre><code class="language-text">/poteto-mode land the stack. verify each pr with a fresh agent first, land only the verified run from the bottom, and tell me where it stopped and why.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode land the stack for the new login form. verify each pr with a fresh agent first, land only the verified run from the bottom, and tell me where it stopped and why.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>land</code> or <code>ship</code></td>
+<td>Routes the request to Shipping.</td>
+</tr>
+<tr>
+<td><code>verify each pr first</code></td>
+<td>Matches step 1. One verifier per PR runs before anything is armed.</td>
+</tr>
+<tr>
+<td><code>land only the verified run</code></td>
+<td>Matches step 2. Landing stops at the first PR without a passing verdict.</td>
+</tr>
+<tr>
+<td><code>tell me where it stopped</code></td>
+<td>Asks for the ceiling and the next gap in the reply, which the playbook already reports.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>Green CI and an approving bot review are not verdicts. Only a verifier that did not write the code counts.</li>
+<li>A verified PR above an unverified one waits. It cannot land without the code below it.</li>
+<li>A merge command can report success when a merge queue only queued the PR, so the playbook reads the PR back to confirm.</li>
+<li>Once landing starts, nobody changes branches or bases except the post-merge retarget in step 4. If a merge stalls, the playbook finds out why before it changes anything.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>babysit</code> comes first and ends at merge-ready. <code>autopilot-stack</code> hands its finished stack to you for this step. Related skills are <code>control-ui</code> and <code>control-cli</code> from <code>cursor-team-kit</code>.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/shipping.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-autopilot-stack" aria-labelledby="t-autopilot-stack" hidden><article><h1>Autopilot Stack</h1>
+<p><strong>Use it when.</strong> You want a queue of changes built and verified with no hand-holding, but you want to review and land the result yourself.</p>
+<p><strong>In plain words.</strong> Autopilot-stack is the careful twin of Autopilot-full. Agents build and verify each change, then deliver them as one linear stack, which is a chain of PRs where each targets the branch below it. Nothing merges. You get a stack with a verdict on every link and you decide when to land. One agent, the root, is the only writer of the chain's shape, because two writers on one chain undo each other.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Runs Autopilot-full's owners without the landing. Each owner builds one PR, proves it, and reports STACK-READY instead of merge-ready.</li>
+<li>Keeps owners from rebasing onto another branch, retargeting, merging, closing a PR, or arming auto-merge. An item that depends on another branches from that item's branch.</li>
+<li>Gives the topology one writer. Owners push only their own branches and report each tip and its intended parent. The root appends each clean PR in dependency order, with its base set to its parent's branch.</li>
+<li>Absorbs drift at the root. It applies Autopilot-full step 5's test to each link and rebases the chain bottom-up where needed. Then it applies the patch-id rule link by link.</li>
+<li>Delivers the chain and then keeps its hands off it. Once landing starts, only the post-merge retarget from <code>playbooks/shipping.md</code> is allowed, and any mid-landing problem goes to you first.</li>
+</ol>
+<p><strong>What you get back.</strong> A catch-up per the <code>ketchup</code> skill. It has links to the stack root and tip, a one-line verdict per link, and anything parked or excluded, each with its reason.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode autopilot these changes but stack them, don't ship. i'll land the stack. &lt;list of changes&gt;
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode autopilot these changes but stack them, don't ship. i'll land the stack. add a search box, show result counts under it, and save recent searches.
+</code></pre>
+<pre><code class="language-text">/poteto-mode autopilot-stack &lt;list of coupled changes&gt;. build the stack, verify each link, and give me a one-line verdict per link when i'm back.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode autopilot-stack add a notes tag field, filter the notes list by tag, and show tags on each note card. build the stack, verify each link, and give me a one-line verdict per link when i'm back.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stack them, don't ship</code></td>
+<td>Selects this playbook. Owners stop at STACK-READY and nothing merges.</td>
+</tr>
+<tr>
+<td><code>build the stack, i'll land it</code></td>
+<td>Also selects this playbook. You keep the landing.</td>
+</tr>
+<tr>
+<td><code>autopilot-stack</code></td>
+<td>Names the playbook directly.</td>
+</tr>
+<tr>
+<td><code>one-line verdict per link</code></td>
+<td>Matches the reply format the playbook already uses.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>It never merges. Landing is your step, and <code>shipping</code> is the playbook for it.</li>
+<li>Pick it over Autopilot-full when the work is sequenced or coupled, when you want review before landing, or when merge authority is withheld.</li>
+<li>Once landing starts, nobody writes to the chain. A mid-landing fix waits for your go.</li>
+<li>Each tick re-reads both autopilot playbooks from trunk, and this one wins where they differ.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>autopilot-full</code> for the independent-PR version, <code>shipping</code> to land the result, and <code>opening-a-pr</code> for each PR. Related skills are <code>ketchup</code>, <code>swarm</code>, and <code>show-me-your-work</code>.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/autopilot-stack.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-autopilot-full" aria-labelledby="t-autopilot-full" hidden><article><h1>Autopilot Full</h1>
+<p><strong>Use it when.</strong> You have a queue of independent changes, you grant full autonomy, and you want each one built, verified, and merged.</p>
+<p><strong>In plain words.</strong> Autopilot-full gives each PR its own owner agent. The owner builds the change, opens the PR, proves it, babysits it to green, and merges it. The twist is that no owner merges on its own say-so. A separate swarm, which is a group of verifier agents that did not write the code, must prove the code that lands. Green CI alone never authorizes a merge, because CI covers one head and a verdict covers one patch.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Honors the operator's gates first. Items you name as yours and PRs outside the queue stop at merge-ready. A request to state the plan is not a go.</li>
+<li>Spawns one owner per PR. Each is a Cursor cloud agent that builds, opens its PR per <code>playbooks/opening-a-pr.md</code>, proves the change on the real artifact, and babysits per <code>playbooks/babysit.md</code>. The code counts as ready only after the <code>/deslop</code> and <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/no-comments/SKILL.md" target="_blank" rel="noopener"><code>/no-comments</code></a> passes. Each owner then rebases onto trunk and reports a code-ready head. They keep a decision trail per the <code>show-me-your-work</code> skill.</li>
+<li>Runs owners in parallel off trunk, never stacked, so each PR lands on its own.</li>
+<li>Swarm-verifies once at the code-ready head per the <code>swarm</code> skill. Verifiers re-run the gates, prove the behavior live through a control skill such as <code>control-ui</code> or <code>control-cli</code>, and audit the diff. Proven findings go to the owner in one fix-forward.</li>
+<li>Lets the owner merge only what was verified, tested on the trunk it lands on. Right before merging, it checks whether trunk changed anything that can affect the patch and rebases only when needed.</li>
+<li>Runs the root layer. Loosened gates need a verifier's proof and a fresh countersign. On your go, it arms <code>/loop 1h</code> to audit every agent until no delegated work is left, and replaces stuck agents.</li>
+<li>Stands down at once on your stop. Every owner reports where it stands and writes nothing until you release it.</li>
+</ol>
+<p><strong>What you get back.</strong> A catch-up per the <code>ketchup</code> skill. It covers each PR's state and verdict, what merged, countersigns and why, and open operator gates, with links to each PR and the trails.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode full autopilot on this queue. each item is independent. &lt;list of items&gt;
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode full autopilot on this queue. each item is independent. fix the typo in the order email, add a dark mode toggle to the shop header, and make the product page load its images lazily.
+</code></pre>
+<pre><code class="language-text">/poteto-mode autopilot this queue with one owner per pr. &lt;list of items&gt;. swarm-verify each pr before merge and give me the verdict for each pr when i'm back.
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode autopilot this queue with one owner per pr. add a csv export button, fix the date format on receipts, and hide sold-out items from search. swarm-verify each pr before merge and give me the verdict for each pr when i'm back.
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>full autopilot</code></td>
+<td>Selects this playbook. Owners can merge once the root's verdict clears them.</td>
+</tr>
+<tr>
+<td><code>each item is independent</code></td>
+<td>Matches the playbook's rule that owners run in parallel off trunk.</td>
+</tr>
+<tr>
+<td><code>i want them merged by morning</code></td>
+<td>Taken from the guide's overnight example. It states the goal.</td>
+</tr>
+<tr>
+<td><code>&lt;item&gt; is mine, stop it at merge-ready</code></td>
+<td>The playbook stops items you name as yours at merge-ready.</td>
+</tr>
+<tr>
+<td><code>stop</code></td>
+<td>Stands every owner down with zero writes until you release it.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>This playbook merges. Use it only when you grant landing authority. For review before landing, use <code>autopilot-stack</code>.</li>
+<li>It is for independent PRs. Coupled or sequenced work belongs in <code>autopilot-stack</code>.</li>
+<li>Never give or bypass an approval the forge enforces. No countersign covers it.</li>
+<li>A disabled or soft-failed check always comes out, because it stops guarding every case.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>autopilot-stack</code>, <code>opening-a-pr</code>, <code>babysit</code>, and <code>shipping</code>. Related skills are <code>swarm</code>, <code>ketchup</code>, <code>show-me-your-work</code>, and <code>/deslop</code>.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/autopilot-full.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-autonomous-run" aria-labelledby="t-autonomous-run" hidden><article><h1>Autonomous run</h1>
+<p><strong>Use it when.</strong> You have one long task and you want the agent to keep working until a clear finish line is met, without checking in.</p>
+<p><strong>In plain words.</strong> The agent first writes down what "done" means as a check it can run, such as "all tests pass". This check is called the exit condition, or predicate. Then it loops. Each round it makes the smallest change that the evidence supports, tests it against the check, and keeps it only if it helped. The agent handles side problems itself and stops only when the check passes or it hits a real dead end.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Write the exit condition as a checkable predicate before the first iteration.</li>
+<li>Pick a wake mechanism with Cursor's <code>/loop</code> command. Use a watcher subagent if there is an event to watch (CI, a merge). Use a fixed-interval heartbeat if there is not.</li>
+<li>Make the smallest change the evidence justifies, verify it against the predicate, and commit it if it advanced. Discard changes that did not help. The <code>sequence-verifiable-units</code> skill orders the work so each unit is checked before the next.</li>
+<li>Fix mid-run discoveries yourself through poteto-mode, such as flaky verifiers or related bugs. Put out-of-band fixes in their own PR. Surface only irreversible actions, product calls no experiment can settle, or a real dead end.</li>
+<li>Checkpoint every iteration with the <code>show-me-your-work</code> skill. Add a row for what changed and whether the predicate moved.</li>
+<li>Stop when the predicate is met. A plateau is not a stop, so change approach. Never relax the predicate to declare victory.</li>
+</ol>
+<p><strong>What you get back.</strong> A reply with the exit condition, the number of iterations run, what landed, what was discarded, and the final state of the predicate.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode run until &lt;the check that means done&gt;, don't stop until it passes. prove it by &lt;the command that shows it&gt; and show me what you tried each round
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode run until the checkout tests all pass, don't stop until they pass. prove it by running npm test and show me what you tried each round
+</code></pre>
+<pre><code class="language-text">/poteto-mode /loop until &lt;the thing to watch&gt; is &lt;the state you want&gt;. keep going and fix side problems yourself. give me a done check at the end
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode /loop until the csv export test is green on ci. keep going and fix side problems yourself. give me a done check at the end
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"run until done"</td>
+<td>Routes to this playbook.</td>
+</tr>
+<tr>
+<td>"/loop until X"</td>
+<td>Routes to this playbook and names the exit condition.</td>
+</tr>
+<tr>
+<td>"going to bed, keep going"</td>
+<td>The agent does not stop to ask. Long unattended work also gets a decision trail via <code>show-me-your-work</code>.</td>
+</tr>
+<tr>
+<td>"watch CI" or "wait for the merge"</td>
+<td>Fits the event-watching wake mechanism (a watcher subagent).</td>
+</tr>
+<tr>
+<td>"check again every <time>"</td>
+<td>Fits the fixed-interval heartbeat when there is no event to watch.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>The agent does not stop at a plateau. It changes approach instead.</li>
+<li>It does not relax the predicate. A vague "done" in your prompt weakens the whole loop.</li>
+<li>It surfaces irreversible actions to you. The poteto-mode Always-pause list covers force-push to shared branches, deploys, data deletion, and customer messages.</li>
+<li>A side fix goes in its own PR, so expect more than one PR.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>orchestrate</code> for multi-day programs, <code>babysit</code> for driving a PR green, <code>hillclimb</code> for improving one metric, and the <code>show-me-your-work</code> skill.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/autonomous-run.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-orchestrate" aria-labelledby="t-orchestrate" hidden><article><h1>Orchestrate</h1>
+<p><strong>Use it when.</strong> You hand over a whole project that runs for days, with many stacked PRs and dozens of subagents, and you want to check in only a couple of times a day.</p>
+<p><strong>In plain words.</strong> One standing chat acts as the coordinator. The coordinator never writes code. It writes briefs, collects results, keeps the merge line green, and makes decisions. Workers are subagents, which are helper agents that each do one unit of work. A worker cannot ask the coordinator questions, so every brief must be complete. The playbook warns that a vague brief fails quietly. Use this only when the work outlives one agent. A task one agent can finish in the session is Autonomous run instead.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Frame the project. State a countable done predicate, such as "all 126 units merged". Quantify units, effort, and time budget. If one agent could finish in that budget, stop and run Autonomous run.</li>
+<li>Install the runtime. Run <code>orch init</code>, open the trail with the <code>show-me-your-work</code> skill, write the standing orders (<code>preferences.md</code>) before any spawn, and seed <code>frontier.json</code> with <code>orch frontier set --repo &lt;repo-dir&gt;</code>.</li>
+<li>Pilot one unit through the full path (brief, worker, verification, stack entry, ledger row, merge). Fix the contract from that evidence before any fan-out.</li>
+<li>Scale with a rolling window of workers. Refill as children finish. Spawn track sub-coordinators only if one coordinator cannot drain the program.</li>
+<li>Drain the queue at set points. Completions are queue events. Run <code>orch inbox drain</code>, classify each pointer, write the rows, run <code>orch status</code>, and spawn the next wave.</li>
+<li>Land continuously and keep the frontier green. One stacker per stack changes topology. Workers never rebase, retarget, or merge.</li>
+<li>Verify with ledger rows keyed by PR and head SHA. Use a verifier on a different model family when verification is costly.</li>
+<li>Close. Reconcile every spawned agent to a terminal row, confirm the predicate on the real artifact, and keep the store as the postmortem.</li>
+</ol>
+<p><strong>What you get back.</strong> A reply at checkpoints and at close with the predicate and the count against it, what each track landed, the frontier (PR list plus SHAs), a verdict summary, what was abandoned and why, the gates awaiting you, the store path, the trail path, and PR links. Numbers come from <code>units.tsv</code> and <code>ledger.tsv</code>.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode run this whole project, &lt;the project and the end state&gt;. own it until it lands. done means &lt;countable predicate&gt;. give me a status page when you need me and prove each unit is verified
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode run this whole project, move our web shop from the old cart api to the new one across all 40 pages. own it until it lands. done means all 40 page PRs are merged and each one is verified. give me a status page when you need me and prove each unit is verified
+</code></pre>
+<pre><code class="language-text">/poteto-mode own this migration until it lands. &lt;what to migrate&gt;, stacked PRs are fine, minimal check-ins. only ask me about &lt;the decisions that are yours&gt;
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode own this migration until it lands. move the notes app from plain javascript files to a typed config, stacked PRs are fine, minimal check-ins. only ask me about deletions and anything that changes what users see
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"run this whole project"</td>
+<td>Routes to this playbook.</td>
+</tr>
+<tr>
+<td>"own this migration until it lands"</td>
+<td>Routes to this playbook.</td>
+</tr>
+<tr>
+<td>"minimal human turns"</td>
+<td>Matches the playbook's design of few check-ins.</td>
+</tr>
+<tr>
+<td>"only ask me about X"</td>
+<td>A good habit. The agent can add your rule to the standing orders (<code>preferences.md</code>) so it reaches every worker.</td>
+</tr>
+<tr>
+<td>"use the arena skill before we start"</td>
+<td>Fits the playbook's rule that a contested decomposition goes through arena before the pilot.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>Work one agent could finish in the session's budget is not a program. The playbook sends it to Autonomous run.</li>
+<li>The coordinator never edits code. Merge conflicts and rebases become tasks for workers or the stacker.</li>
+<li>Irreversible actions reach you as parked gates (<code>gates.md</code>). Examples are force-push to shared branches, deploys, deletions, and closing someone else's PR.</li>
+<li>A new head SHA voids a verification row. Expect re-verification after a restack.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>autonomous-run</code>, <code>babysit</code>, <code>shipping</code>, <code>pause-safely</code>, <code>session-pickup</code>, and the <code>show-me-your-work</code> and <code>arena</code> skills.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/orchestrate.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-session-pickup" aria-labelledby="t-session-pickup" hidden><article><h1>Session pickup</h1>
+<p><strong>Use it when.</strong> An earlier agent started work, and you want a fresh agent to take over from where it stopped.</p>
+<p><strong>In plain words.</strong> The playbook treats the earlier agent's trail as the source of truth. A trail is a transcript, a cloud-agent URL, or a pushed branch. The new agent reads it, works out what already landed and what is left, and continues from there. It does not redo finished work. It does check the final result on the real artifact, because a past "it passed" is a report and not proof.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Locate the prior trail in the active workspace's <code>agent-transcripts/</code> directory, a cloud-agent URL, or a pushed branch. Read the overview and last messages first. Parse a long transcript in a subagent.</li>
+<li>Reconstruct the operational state. Check the branch and worktree, what landed (<code>git log</code>, <code>git diff</code> against the base), the open todos, and the decisions made.</li>
+<li>Diff done against pending. Name the resume point. Do not re-run the old repro or redo completed work.</li>
+<li>Route the remaining work to the matching playbook. Pick a verdict among continue, ship a finished recommendation, ratify or override a prior conclusion, or postmortem a failed run.</li>
+<li>Verify the inherited claims against the original goal on the real artifact, using the <code>principle-prove-it-works</code> skill.</li>
+</ol>
+<p><strong>What you get back.</strong> A reply with where the prior agent stopped, what you inherited and what you redid (ideally nothing redone), the resume point, and the outcome.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode pick up where the last agent left off on &lt;branch, transcript, or cloud-agent URL&gt;. don't redo finished work. finish &lt;the remaining goal&gt; and prove it works
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode pick up where the last agent left off on the branch login-form-fix. don't redo finished work. finish the password reset flow and prove it works
+</code></pre>
+<pre><code class="language-text">/poteto-mode resume the work from &lt;where the prior chat or branch lives&gt;. tell me what you inherited and the resume point, then &lt;what you want next&gt;. check the result on the real &lt;artifact&gt;
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode resume the work from the csv export chat from yesterday. tell me what you inherited and the resume point, then finish the export. check the result on the real exported file
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"pick up where X left off"</td>
+<td>Routes to this playbook.</td>
+</tr>
+<tr>
+<td>"take over from <URL or branch>"</td>
+<td>Points step 1 at a cloud-agent URL or pushed branch.</td>
+</tr>
+<tr>
+<td>"postmortem the failed run"</td>
+<td>Selects the postmortem verdict in step 4.</td>
+</tr>
+<tr>
+<td>"ratify or override its conclusion"</td>
+<td>Selects the ratify or override verdict in step 4.</td>
+</tr>
+<tr>
+<td>"ship the finished recommendation"</td>
+<td>Selects the ship verdict in step 4. The routed playbook owns the rest.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>The playbook warns against a "let me verify from scratch" pass. That treats an authoritative trail as untrustworthy.</li>
+<li>Do not glob across <code>~/.cursor/projects/*/</code>. That crosses workspace boundaries and reads private chats from unrelated projects.</li>
+<li>The pickup playbook ends at routing. The routed playbook owns the rest.</li>
+<li>A prior self-report of passing is not proof. Step 5 checks the real artifact.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>pause-safely</code> (its complement), <code>autonomous-run</code>, <code>bug-fix</code>, <code>feature</code>, and the <code>principle-guard-the-context-window</code> and <code>principle-prove-it-works</code> skills.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/session-pickup.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-pause-safely" aria-labelledby="t-pause-safely" hidden><article><h1>Pause safely</h1>
+<p><strong>Use it when.</strong> You must stop work now and want the agent to leave a clean checkpoint that a fresh agent can resume from.</p>
+<p><strong>In plain words.</strong> A pause is a stop that loses nothing. The agent finishes or backs out of its current step, saves its edits in one commit, and writes a resume note. The note says what the work is for, how far it got, and what to do first. Compaction is when a long chat is trimmed to fit its memory. A resume note on disk survives compaction. This playbook runs only when you ask for it.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Stop at a safe boundary. Finish the current atomic step or back out of it. Start nothing new and cancel any nested subagents.</li>
+<li>Take no irreversible action to pause. Make no PR and no push unless one was already out.</li>
+<li>Make the work durable. Commit uncommitted edits as one clear <code>wip:</code> commit on the current branch. If the tree is broken, say so in the commit body in one line.</li>
+<li>Write the resume note off-context. Include intent, what you were doing, progress and what is verified, current state, next steps, key files, and gotchas. For the compaction trigger, write it to a file such as <code>/tmp/&lt;slug&gt;-resume.md</code>. If a <code>show-me-your-work</code> trail exists, point at it instead of copying it.</li>
+</ol>
+<p><strong>What you get back.</strong> A reply with where you are in the loop, what is on disk versus still in the agent's head (paths, no diff dumps), the commits made and whether the tree is clean, and the first action on resume. It is a pause, not a final report.</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode pause safely. stop at a safe point, commit the work as a wip commit, and write a resume note so a fresh agent can continue &lt;the task&gt;
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode pause safely. stop at a safe point, commit the work as a wip commit, and write a resume note so a fresh agent can continue the notes app search feature
+</code></pre>
+<pre><code class="language-text">/poteto-mode i'm going offline, so suspend &lt;the task&gt; cleanly. don't push or open a pr. tell me what's on disk and the first thing to do when we resume
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode i'm going offline, so suspend the shop discount code work cleanly. don't push or open a pr. tell me what's on disk and the first thing to do when we resume
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"pause safely"</td>
+<td>Routes to this playbook.</td>
+</tr>
+<tr>
+<td>"going offline"</td>
+<td>The playbook lists going offline as a reason to pause.</td>
+</tr>
+<tr>
+<td>"before we compact"</td>
+<td>The playbook lists imminent context compaction as a trigger. The resume note goes to a file.</td>
+</tr>
+<tr>
+<td>"restarting cursor"</td>
+<td>The playbook lists a Cursor restart as a trigger.</td>
+</tr>
+<tr>
+<td>"suspend this so it can be resumed"</td>
+<td>Matches the playbook's purpose, a clean stop that a fresh agent can resume.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>Do not combine a pause request with "keep going", "going to bed, keep going", or "don't stop". The playbook then does not pause.</li>
+<li>The agent makes no PR and no push to pause, unless one was already out.</li>
+<li>Edits go in one <code>wip:</code> commit on the current branch. The tree may be broken, and the commit body says so in one line.</li>
+<li>A good habit is to read the resume note before you close the chat.</li>
+</ul>
+<p><strong>Pairs with.</strong> <code>session-pickup</code> (its complement), <code>autonomous-run</code>, <code>orchestrate</code>, and the <code>show-me-your-work</code> skill.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/pause-safely.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section><section role="tabpanel" id="p-worktree-cleanup" aria-labelledby="t-worktree-cleanup" hidden><article><h1>Worktree and simulator cleanup</h1>
+<p><strong>Use it when.</strong> Your disk is filling up and you want to remove old git worktrees and stale iOS simulators safely.</p>
+<p><strong>In plain words.</strong> A git worktree is an extra checked-out copy of a repository, often made for a branch or a task. They pile up and take disk space. This playbook runs an audit script that lists each worktree with its size, age, and state, and suggests a bucket for it. The bucket is advice only. The agent then confirms which chats still use each worktree before it deletes anything. This playbook deletes user state with no code review to catch a slip, so its gates act as the review.</p>
+<p><strong>What it does.</strong></p>
+<ol>
+<li>Record <code>df -h /</code>. Run <code>scripts/worktree-audit.sh [-b &lt;pr-base-ref&gt;] [repo-path]</code>. Pass <code>-b origin/&lt;branch&gt;</code> when PRs target another branch. Run the slow transcript scan in the background.</li>
+<li>Treat the bucket as advice. Get the pinned and active chats from you or the sidebar, and cross-check every candidate. The pinned set wins.</li>
+<li>Verify usage before deleting. For each <code>verify-recent-chat</code> row, or anything doubtful, fan out subagents to read the transcripts.</li>
+<li>Pause on irreversible loss. <code>wip:N</code> is N tracked uncommitted edits, so show the diff and get a decision first. <code>scratch:N</code> is untracked throwaway, safe to drop, but name the files.</li>
+<li>Prune the confirmed set with <code>git worktree remove --force &lt;path&gt;</code>. If the directory survives, <code>rm -rf</code> it, then run <code>git worktree prune</code>. Branch refs survive. Confirm with <code>df -h /</code> and re-list.</li>
+<li>Reclaim simulators and other caches. The playbook lists <code>xcrun simctl --set testing delete all</code>, <code>xcrun simctl delete unavailable</code>, <code>xcrun simctl runtime list</code> then <code>runtime delete &lt;id&gt;</code>, Xcode <code>DerivedData</code> and <code>iOS DeviceSupport</code>, Cursor application support files, and package caches. Clear only caches you have not said to keep.</li>
+</ol>
+<p><strong>What you get back.</strong> A reply with <code>df -h /</code> before and after and the space reclaimed, the worktrees pruned, and a one-line reason for each one held back (in use by which chat, or uncommitted work).</p>
+<p><strong>Copy and adapt.</strong></p>
+<pre><code class="language-text">/poteto-mode clean up worktrees. my disk is low. prune the safe-to-prune ones, keep anything used by &lt;my pinned chats&gt;, and show me the disk space before and after
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode clean up worktrees. my disk is low. prune the safe-to-prune ones, keep anything used by my pinned web shop chats, and show me the disk space before and after
+</code></pre>
+<pre><code class="language-text">/poteto-mode what's using my disk? free up space by deleting old simulators and pruning merged worktrees in &lt;repo path&gt;. ask me before deleting any uncommitted work
+</code></pre>
+<p>Filled in:</p>
+<pre><code class="language-text">/poteto-mode what's using my disk? free up space by deleting old simulators and pruning merged worktrees in ~/code/notes-app. ask me before deleting any uncommitted work
+</code></pre>
+<p><strong>Make it yours.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Add this phrase</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"clean up worktrees"</td>
+<td>Routes to this playbook.</td>
+</tr>
+<tr>
+<td>"prune safe-to-prune worktrees"</td>
+<td>Routes to this playbook.</td>
+</tr>
+<tr>
+<td>"delete old simulators"</td>
+<td>Routes to this playbook and points at step 6.</td>
+</tr>
+<tr>
+<td>"my prs target <branch>"</td>
+<td>Fits the <code>-b origin/&lt;branch&gt;</code> option of the audit script.</td>
+</tr>
+<tr>
+<td>"keep my pinned chats"</td>
+<td>Gives the agent the pinned set, which wins over the script's bucket.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Watch for.</strong></p>
+<ul>
+<li>The script has marked a worktree <code>safe</code> that the user had pinned. The pinned set always wins.</li>
+<li>A pinned chat spawns arena and repro trees into sibling worktrees through background subagents. Those are in use even when their names are not in the sidebar.</li>
+<li><code>wip</code> rows and in-use worktrees pause for your decision. Only clean, merged, not-in-use worktrees proceed on their own.</li>
+<li>Uncommitted work removed with <code>git worktree remove --force</code> is gone. Branch refs survive, so committed work is safe.</li>
+</ul>
+<p><strong>Pairs with.</strong> The <code>principle-build-the-lever</code>, <code>principle-prove-it-works</code>, and <code>principle-guard-the-context-window</code> skills.</p><p class="src">Source playbook: <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/worktree-cleanup.md" target="_blank" rel="noopener">view on GitHub</a>.</p></article></section></main></div><script>
+if(window.mermaid)mermaid.initialize({startOnLoad:false,theme:'dark'});
+const tabs=[...document.querySelectorAll('[role=tab]')];
+const menu=document.getElementById('menu');
+function setOpen(o){document.body.classList.toggle('open',o);menu.setAttribute('aria-expanded',o)}
+function show(id,anchor){
+ if(!document.getElementById('p-'+id))id='how';
+ tabs.forEach(t=>t.setAttribute('aria-selected',t.dataset.tab===id));
+ document.querySelectorAll('[role=tabpanel]').forEach(p=>p.hidden=p.id!=='p-'+id);
+ document.getElementById('t-'+id).scrollIntoView({block:'nearest'});
+ try{history.replaceState(null,'','#'+id)}catch(e){}
+ setOpen(false);
+ renderMermaid(document.getElementById('p-'+id));
+ const el=anchor&&document.getElementById(anchor);
+ if(el)el.scrollIntoView();else window.scrollTo(0,0);
+}
+async function renderMermaid(panel){
+ if(!window.mermaid)return;
+ const nodes=[...panel.querySelectorAll('pre.mermaid:not([data-processed])')];
+ if(nodes.length)try{await mermaid.run({nodes})}catch(e){}
+}
+document.querySelectorAll('pre:not(.mermaid)').forEach(pre=>{const c=pre.querySelector('code');if(!c)return;const b=document.createElement('button');b.className='cp';b.textContent='Copy';b.addEventListener('click',async()=>{const t=c.innerText;try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(_){}a.remove()}b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1500)});pre.appendChild(b)});
+tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.tab)));
+menu.addEventListener('click',()=>setOpen(!document.body.classList.contains('open')));
+document.getElementById('scrim').addEventListener('click',()=>setOpen(false));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false)});
+document.addEventListener('click',e=>{const a=e.target.closest('a[data-go]');if(!a)return;e.preventDefault();const[i,an]=a.dataset.go.split(':');show(i,an)});
+window.addEventListener('load',()=>show(location.hash.slice(1)||'how'));
+</script></body></html>
