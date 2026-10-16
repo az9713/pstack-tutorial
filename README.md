@@ -6,12 +6,13 @@ A single-page, tabbed tutorial for the **pstack** plugin for Cursor. It starts f
 
 ## What is in the page
 
-Fourteen tabs.
+Fifteen pages. A contents panel on the left lists them in three groups. On a narrow screen it opens from a Contents button.
 
 | Tab | Content |
 |---|---|
 | Overview | The pstack README. |
 | Start here | A 20-minute onboarding for people who have never used Cursor or a coding agent. |
+| Worked example | One bug followed through the whole pstack path, with the prompt to type at each stage. |
 | 1 to 10 | The ten pstack guide pages. Setup, `/poteto-mode`, understand, design, build and clean, verify and ship, overnight runs, principles, make it yours, recipes and pitfalls. |
 | Article: Verification | A summary of "The Complete Guide to pstack Pt. 1". Verification skill, agent-friendly CLI, cloud agents against worktrees, the Feature Map. |
 | Video: Six stages | A summary of Eric's video. pstack mapped onto six stages of the software life cycle, with chapter timestamps. |
@@ -36,6 +37,7 @@ The two summaries are written in our own words from the saved X page and the vid
 |---|---|
 | `build.py` | Converts the Markdown pages to one tabbed HTML file. |
 | `src/00-start-here.md` | The "Start here" tab. |
+| `src/example.md` | The "Worked example" tab. |
 | `src/article.md` | The "Article: Verification" tab. |
 | `src/video.md` | The "Video: Six stages" tab. |
 

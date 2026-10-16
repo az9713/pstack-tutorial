@@ -1,14 +1,16 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>pstack Docs</title><style>
-:root{--bg:#0f172a;--card:#1e293b;--tx:#e2e8f0;--tx2:#cbd5e1;--mut:#94a3b8;--a1:#fb923c;--a2:#2dd4bf;--bd:#334155}
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>pstack Tutorial</title><style>
+:root{--bg:#0f172a;--card:#1e293b;--tx:#e2e8f0;--tx2:#cbd5e1;--mut:#94a3b8;--a1:#fb923c;--a2:#2dd4bf;--bd:#334155;--side:250px}
 *{box-sizing:border-box}html{scroll-padding-top:64px}
 body{margin:0;background:var(--bg);color:var(--tx2);font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}
-header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--bd)}
-.bar{display:flex;align-items:center;gap:12px;padding:8px 16px;max-width:1000px;margin:0 auto}
-.brand{color:var(--a1);font-weight:700;white-space:nowrap}
-nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:thin}
-nav button{background:none;border:1px solid transparent;color:var(--mut);padding:6px 12px;border-radius:8px;font:inherit;font-size:14px;cursor:pointer;white-space:nowrap}
-nav button:hover{color:var(--tx)}nav button[aria-selected=true]{background:var(--card);color:var(--a2);border-color:var(--bd)}
-main{max-width:860px;margin:0 auto;padding:24px 16px 80px}
+.layout{display:flex;max-width:1180px;margin:0 auto}
+aside{width:var(--side);flex:none;position:sticky;top:0;height:100vh;overflow-y:auto;padding:20px 12px;border-right:1px solid var(--bd);background:var(--bg)}
+.brand{display:block;color:var(--a1);font-weight:700;font-size:1.1rem;padding:0 10px 12px}
+.grp{color:var(--mut);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:12px 10px 4px}
+aside button{display:block;width:100%;text-align:left;background:none;border:0;border-left:3px solid transparent;color:var(--tx2);padding:5px 10px;border-radius:0 8px 8px 0;font:inherit;font-size:14.5px;cursor:pointer}
+aside button:hover{background:var(--card);color:var(--tx)}
+aside button[aria-selected=true]{background:var(--card);color:var(--a2);border-left-color:var(--a1);font-weight:600}
+main{flex:1;min-width:0;max-width:860px;padding:28px 24px 80px}
+#bar{display:none}
 h1,h2,h3,h4{color:var(--tx);line-height:1.25}h1{font-size:2rem;margin-top:0}h2{margin-top:2.2em;padding-bottom:.3em;border-bottom:1px solid var(--bd)}
 a{color:var(--a2)}a:hover{color:var(--a1)}strong{color:var(--tx)}
 code{background:var(--card);border:1px solid var(--bd);border-radius:4px;padding:1px 5px;font-size:.88em;color:var(--a1)}
@@ -19,7 +21,16 @@ th,td{border:1px solid var(--bd);padding:8px 10px;text-align:left;vertical-align
 img{max-width:100%;height:auto;border-radius:10px;border:1px solid var(--bd)}
 details{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:8px 14px;margin:1em 0}summary{cursor:pointer;color:var(--a1)}
 blockquote{margin:1em 0;padding:.1em 1em;border-left:3px solid var(--a1);color:var(--mut)}hr{border:0;border-top:1px solid var(--bd);margin:2em 0}
-</style></head><body><header><div class="bar"><span class="brand">pstack</span><nav role="tablist"><button role="tab" id="t-overview" data-tab="overview" aria-controls="p-overview">Overview</button><button role="tab" id="t-start" data-tab="start" aria-controls="p-start">Start here</button><button role="tab" id="t-setup" data-tab="setup" aria-controls="p-setup">1 Setup</button><button role="tab" id="t-mode" data-tab="mode" aria-controls="p-mode">2 poteto-mode</button><button role="tab" id="t-understand" data-tab="understand" aria-controls="p-understand">3 Understand</button><button role="tab" id="t-design" data-tab="design" aria-controls="p-design">4 Design</button><button role="tab" id="t-build" data-tab="build" aria-controls="p-build">5 Build &amp; clean</button><button role="tab" id="t-verify" data-tab="verify" aria-controls="p-verify">6 Verify &amp; ship</button><button role="tab" id="t-overnight" data-tab="overnight" aria-controls="p-overnight">7 Overnight</button><button role="tab" id="t-principles" data-tab="principles" aria-controls="p-principles">8 Principles</button><button role="tab" id="t-yours" data-tab="yours" aria-controls="p-yours">9 Make it yours</button><button role="tab" id="t-recipes" data-tab="recipes" aria-controls="p-recipes">10 Recipes</button><button role="tab" id="t-article" data-tab="article" aria-controls="p-article">Article: Verification</button><button role="tab" id="t-video" data-tab="video" aria-controls="p-video">Video: Six stages</button></nav></div></header><main><section role="tabpanel" id="p-overview" aria-labelledby="t-overview" hidden><article><h1 id="overview--pstack">pstack</h1>
+@media(max-width:820px){
+ #bar{display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:6;background:var(--bg);border-bottom:1px solid var(--bd);padding:8px 16px}
+ #bar button{background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer}
+ #bar span{color:var(--a1);font-weight:700}
+ aside{position:fixed;z-index:7;left:0;top:0;width:min(280px,85vw);transform:translateX(-100%);transition:transform .2s;border-right:1px solid var(--bd)}
+ body.open aside{transform:none}
+ #scrim{display:none;position:fixed;inset:0;z-index:6;background:rgba(0,0,0,.5)}body.open #scrim{display:block}
+ .layout{display:block}main{padding:20px 16px 80px}
+}
+</style></head><body><div id="bar"><button id="menu" aria-expanded="false" aria-controls="side">Contents</button><span>pstack tutorial</span></div><div id="scrim"></div><div class="layout"><aside id="side"><span class="brand">pstack tutorial</span><nav role="tablist" aria-orientation="vertical"><div class="grp">Begin here</div><button role="tab" id="t-overview" data-tab="overview" aria-controls="p-overview">Overview</button><button role="tab" id="t-start" data-tab="start" aria-controls="p-start">Start here</button><button role="tab" id="t-example" data-tab="example" aria-controls="p-example">Worked example</button><div class="grp">The guide</div><button role="tab" id="t-setup" data-tab="setup" aria-controls="p-setup">1 Setup</button><button role="tab" id="t-mode" data-tab="mode" aria-controls="p-mode">2 poteto-mode</button><button role="tab" id="t-understand" data-tab="understand" aria-controls="p-understand">3 Understand</button><button role="tab" id="t-design" data-tab="design" aria-controls="p-design">4 Design</button><button role="tab" id="t-build" data-tab="build" aria-controls="p-build">5 Build &amp; clean</button><button role="tab" id="t-verify" data-tab="verify" aria-controls="p-verify">6 Verify &amp; ship</button><button role="tab" id="t-overnight" data-tab="overnight" aria-controls="p-overnight">7 Overnight</button><button role="tab" id="t-principles" data-tab="principles" aria-controls="p-principles">8 Principles</button><button role="tab" id="t-yours" data-tab="yours" aria-controls="p-yours">9 Make it yours</button><button role="tab" id="t-recipes" data-tab="recipes" aria-controls="p-recipes">10 Recipes</button><div class="grp">Sources</div><button role="tab" id="t-article" data-tab="article" aria-controls="p-article">Article: Verification</button><button role="tab" id="t-video" data-tab="video" aria-controls="p-video">Video: Six stages</button></nav></aside><main><section role="tabpanel" id="p-overview" aria-labelledby="t-overview" hidden><article><h1 id="overview--pstack">pstack</h1>
 <p>i'm <a href="https://x.com/poteto" target="_blank" rel="noopener">poteto</a>. i'm not a president or ceo, but i've worked with millions of lines of code at Meta, Netflix, and Cursor. i'm also on the react core team where i help build and maintain react compiler.</p>
 <p>there's a growing sense that ai writes too much slop code. i agree. i don't want to ship like a team of twenty slop artists. throughput without quality is not a goal i aspire to. if you want to go fast, go deep first. </p>
 <p><strong>pstack is my answer.</strong> these are the same skills i use everyday to ship high quality code at Cursor. this turns cursor into a real engineering team. the goal is not to maximize loc, in fact it's the opposite. pstack helps you write less, but higher quality code.</p>
@@ -1142,7 +1153,122 @@ help:              /poteto-help which skill should i use to review this branch?
 <li><a href="#yours" data-go="yours:">Make it yours</a>.</li>
 <li><a href="#recipes" data-go="recipes:">Recipes and pitfalls</a>.</li>
 </ol>
-<p>If you are stuck, or you do not know which skill fits, type <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-help/SKILL.md" target="_blank" rel="noopener"><code>/poteto-help</code></a> with your question.</p></article></section><section role="tabpanel" id="p-setup" aria-labelledby="t-setup" hidden><article><h1 id="setup--set-up-pstack">Set up pstack</h1>
+<p>If you are stuck, or you do not know which skill fits, type <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-help/SKILL.md" target="_blank" rel="noopener"><code>/poteto-help</code></a> with your question.</p></article></section><section role="tabpanel" id="p-example" aria-labelledby="t-example" hidden><article><h1 id="example--worked-example-one-bug-the-whole-pstack-path">Worked example: one bug, the whole pstack path</h1>
+<p>This page follows one bug from first report to merged PR. It shows which pstack part fires at each stage, and what to type.</p>
+<p>The example is built from the guide pages and the playbook descriptions. It was not run, so each "What happens" line says what the docs describe, not captured output.</p>
+<h2 id="example--the-scenario">The scenario</h2>
+<p>Your app exports orders to CSV. Since yesterday's deploy, the last row is missing. You do not know the code. Steps 2 to 7 and step 9 each fit in a chat. Step 8 is a one-time project setup.</p>
+<pre class="mermaid">flowchart LR
+    A[1 Set up] --&gt; B[2 Understand]
+    B --&gt; C[3 Fix with proof]
+    C --&gt; D[4 Vet numbers]
+    D --&gt; E[5 Clean]
+    E --&gt; F[6 Attack]
+    F --&gt; G[7 PR and babysit]
+    G --&gt; H[9 Land and scale]
+    I[8 Verification skill] -.-&gt; C
+    I -.-&gt; G
+</pre>
+<h2 id="example--step-1-set-up-once">Step 1. Set up once</h2>
+<pre><code class="language-text">/add-plugin pstack
+/setup-pstack
+</code></pre>
+<p>Pick the <code>large</code> budget and accept the roles. Start a new chat after setup, because the rule applies to new chats only. See <a href="#setup" data-go="setup:">Set up pstack</a>.</p>
+<h2 id="example--step-2-understand-before-you-touch-anything">Step 2. Understand before you touch anything</h2>
+<pre><code class="language-text">/how does the csv export work? give me the main files and the order things run in.
+</code></pre>
+<p><strong>What happens.</strong> <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/how/SKILL.md" target="_blank" rel="noopener"><code>/how</code></a> reads the code and explains the runtime flow, the key types, and the non-obvious parts. If a word is new to you, type <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/bro/SKILL.md" target="_blank" rel="noopener"><code>/bro</code></a>.</p>
+<p>Then ask about history:</p>
+<pre><code class="language-text">/why was the export changed in yesterday's deploy?
+</code></pre>
+<p><strong>What happens.</strong> <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/why/SKILL.md" target="_blank" rel="noopener"><code>/why</code></a> starts from source control. It then searches any MCP servers you have connected, such as an issue tracker or team chat, and reports what it found. If it finds nothing, it says so. See <a href="#understand" data-go="understand:">Understand the code</a>.</p>
+<h2 id="example--step-3-fix-the-bug-with-proof">Step 3. Fix the bug with proof</h2>
+<pre><code class="language-text">/poteto-mode the csv export drops its last row since yesterday's deploy. failing job id is 4812. repro first, then fix. done means the 60k-row fixture exports every row. show me the row counts before and after.
+</code></pre>
+<p>This prompt has all five parts. The goal is the missing row. The done check is the 60k-row fixture. The proof is the row counts. What you know is the job id. The constraint is "repro first".</p>
+<p><strong>What happens.</strong></p>
+<ol>
+<li><code>/poteto-mode</code> matches the <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/playbooks/bug-fix.md" target="_blank" rel="noopener">Bug fix playbook</a>.</li>
+<li>It copies the playbook steps into the todo list. A skipped step stays visible as <code>skip: &lt;reason&gt;</code>.</li>
+<li>It reproduces the defect first, then traces to the root cause and fixes it there.</li>
+<li>The reply shows the row counts before and after. Each claim is labelled measured, inferred, or guess. It names each principle it applied, such as <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/principle-fix-root-causes/SKILL.md" target="_blank" rel="noopener">Fix Root Causes</a> and <a href="https://github.com/cursor/plugins/blob/main/pstack/skills/principle-prove-it-works/SKILL.md" target="_blank" rel="noopener">Prove It Works</a>, and the decision each one changed.</li>
+</ol>
+<p>If the reply claims success without evidence, send:</p>
+<pre><code class="language-text">apply prove it works. run the real export and show me the row counts.
+</code></pre>
+<h2 id="example--step-4-vet-a-number-only-if-you-claim-one">Step 4. Vet a number, only if you claim one</h2>
+<p>Skip this step for a plain bug fix. If your fix claims a speedup, vet it first:</p>
+<pre><code class="language-text">/benchmark-checklist vet the export speedup before it goes in the pr
+</code></pre>
+<p>It asks seven questions and gives a verdict of faster, slower, no measurable difference, or inconclusive. See <a href="#verify" data-go="verify:verify--vet-a-measured-number-with-benchmark-checklist">Verify and ship</a>.</p>
+<h2 id="example--step-5-clean-the-diff">Step 5. Clean the diff</h2>
+<pre><code class="language-text">/no-comments the diff
+</code></pre>
+<p>A separate reviewer, <a href="https://github.com/cursor/plugins/blob/main/pstack/agents/comment-sicko.md" target="_blank" rel="noopener">Comment Sicko</a>, removes comments that the author would defend. Then ask for a cleanup of extra code. <code>/deslop</code> ships in the <code>cursor-team-kit</code> plugin, not in pstack. Without it, ask in plain words to remove narrating comments, unsupported guards, dead compatibility paths, and unrelated edits. See <a href="#build" data-go="build:">Build and clean</a>.</p>
+<h2 id="example--step-6-attack-the-change">Step 6. Attack the change</h2>
+<pre><code class="language-text">/interrogate review my changes. only report real bugs or regressions.
+</code></pre>
+<p>Reviewers on different model families read the diff. The lead sorts findings into Act on, Consider, Noted, and Dismissed, with a reason for each dismissal. It applies nothing by itself. You decide. See <a href="#design" data-go="design:design--break-it-with-interrogate">Design the change</a>.</p>
+<h2 id="example--step-7-open-the-pr-and-drive-it-to-merge-ready">Step 7. Open the PR and drive it to merge-ready</h2>
+<pre><code class="language-text">/poteto-mode open the pr. small ordered commits, evidence in the description.
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">/poteto-mode babysit this pr. get it green.
+</code></pre>
+<p>Babysit handles blockers in this order: conflicts, review threads, CI. It batches fixes into one push. It stops at merge-ready and never merges by itself.</p>
+<h2 id="example--step-8-make-the-proof-repeatable">Step 8. Make the proof repeatable</h2>
+<p>Do this once per project. If agents cannot drive your app by script, type:</p>
+<pre><code class="language-text">/create-verification-skill
+</code></pre>
+<p>It writes <code>.cursor/skills/verify-&lt;app&gt;/</code>, with launch, doctor, drive, evidence, and cleanup sections plus a Feature Map. Commit it. From then on, a prompt can say "use <code>/verify-&lt;app&gt;</code> and show me a video". Run <code>/maintain-verification-skill</code> at least once a day to keep the map true. The <a href="#article" data-go="article:">Article tab</a> explains why the author treats this as the first skill to build.</p>
+<h2 id="example--step-9-land-it-then-scale">Step 9. Land it, then scale</h2>
+<pre><code class="language-text">/poteto-mode land the stack.
+</code></pre>
+<p>The Shipping playbook verifies each PR with a fresh agent before it merges anything. It lands only the unbroken run of verified PRs from the bottom up.</p>
+<p>To work while you sleep, state a finish condition and ask for a log:</p>
+<pre><code class="language-text">/poteto-mode im going to bed. keep going until the 60k-row fixture exports every row on main. log your decisions.
+</code></pre>
+<p>In the morning, type <code>/show-me-your-work catch me up on what you did last night</code>. Read the Attention section first. See <a href="#overnight" data-go="overnight:">Run work while you sleep</a>.</p>
+<h2 id="example--what-this-example-shows">What this example shows</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>pstack part used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Understand</td>
+<td><code>/how</code>, <code>/why</code>, <code>/bro</code></td>
+</tr>
+<tr>
+<td>Build</td>
+<td><code>/poteto-mode</code>, Bug fix playbook, principles</td>
+</tr>
+<tr>
+<td>Clean</td>
+<td><code>/no-comments</code></td>
+</tr>
+<tr>
+<td>Verify</td>
+<td>proof in the reply, <code>/create-verification-skill</code></td>
+</tr>
+<tr>
+<td>Review</td>
+<td><code>/interrogate</code></td>
+</tr>
+<tr>
+<td>Ship</td>
+<td>Opening a PR, Babysit, and Shipping playbooks</td>
+</tr>
+<tr>
+<td>Overnight</td>
+<td><code>/show-me-your-work</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>The example does not use the Design stage (<code>/architect</code>, <code>/arena</code>). A bug fix with a known cause needs no design work, and the guide says most changes need none of it. The <a href="#video" data-go="video:">Video tab</a> maps all six stages.</p></article></section><section role="tabpanel" id="p-setup" aria-labelledby="t-setup" hidden><article><h1 id="setup--set-up-pstack">Set up pstack</h1>
 <p>In this page you install the plugin, pick which models pstack uses, and run your first task. Setup is one command plus a short conversation.</p>
 <h2 id="setup--install-the-plugin">Install the plugin</h2>
 <p>In a Cursor chat, run:</p>
@@ -2017,14 +2143,18 @@ keep a decision log. don't ask me before committing.
 <li>The two most distinctive ideas are multi-model design and end-to-end verification.</li>
 <li>You can adopt one skill or one principle at a time. Eric took three principles and left the rest.</li>
 </ol>
-<p>Also read: <a href="#article" data-go="article:">Article: verification is the first skill to build</a> is the companion tab for the testing stage.</p></article></section></main><script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js" integrity="sha384-WmdflGW9aGfoBdHc4rRyWzYuAjEmDwMdGdiPNacbwfGKxBW/SO6guzuQ76qjnSlr" crossorigin="anonymous"></script><script>
+<p>Also read: <a href="#article" data-go="article:">Article: verification is the first skill to build</a> is the companion tab for the testing stage.</p></article></section></main></div><script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js" integrity="sha384-WmdflGW9aGfoBdHc4rRyWzYuAjEmDwMdGdiPNacbwfGKxBW/SO6guzuQ76qjnSlr" crossorigin="anonymous"></script><script>
+if(window.mermaid)mermaid.initialize({startOnLoad:false,theme:'dark'});
 const tabs=[...document.querySelectorAll('[role=tab]')];
+const menu=document.getElementById('menu');
+function setOpen(o){document.body.classList.toggle('open',o);menu.setAttribute('aria-expanded',o)}
 function show(id,anchor){
  if(!document.getElementById('p-'+id))id='overview';
  tabs.forEach(t=>t.setAttribute('aria-selected',t.dataset.tab===id));
  document.querySelectorAll('[role=tabpanel]').forEach(p=>p.hidden=p.id!=='p-'+id);
- document.getElementById('t-'+id).scrollIntoView({block:'nearest',inline:'center'});
+ document.getElementById('t-'+id).scrollIntoView({block:'nearest'});
  try{history.replaceState(null,'','#'+id)}catch(e){}
+ setOpen(false);
  renderMermaid(document.getElementById('p-'+id));
  const el=anchor&&document.getElementById(anchor);
  if(el)el.scrollIntoView();else window.scrollTo(0,0);
@@ -2035,6 +2165,9 @@ async function renderMermaid(panel){
  if(nodes.length)try{await mermaid.run({nodes})}catch(e){}
 }
 tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.tab)));
+menu.addEventListener('click',()=>setOpen(!document.body.classList.contains('open')));
+document.getElementById('scrim').addEventListener('click',()=>setOpen(false));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false)});
 document.addEventListener('click',e=>{const a=e.target.closest('a[data-go]');if(!a)return;e.preventDefault();const[i,an]=a.dataset.go.split(':');show(i,an)});
-window.addEventListener('load',()=>{if(window.mermaid)mermaid.initialize({startOnLoad:false,theme:'dark'});show(location.hash.slice(1)||'overview')});
+window.addEventListener('load',()=>show(location.hash.slice(1)||'overview'));
 </script></body></html>
